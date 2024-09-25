@@ -9,12 +9,6 @@ public class InfoPanel : MonoBehaviour
     public Image cardImage;
     public TextMeshProUGUI cardName;
     public TextMeshProUGUI cardDescription;
-    private bool isCardInfoVisible;
-
-    private void Start()
-    {
-        isCardInfoVisible = false;
-    }
 
     public void ShowCardInfo(CardData cardData)
     {
