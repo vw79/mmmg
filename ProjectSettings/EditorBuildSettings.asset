@@ -5,10 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/VirtualButtonsForUnity/VirtualButtonsForUnity/Examples/SceneExample.unity
     guid: 50ba1c8cfb6422cb8a7ac31ea3227ec8
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Test.unity
     guid: e616c1da1f53c0d47a5e47a453797be8
+  - enabled: 1
+    path: Assets/Scenes/Deck.unity
+    guid: d4f54d102d2543f4db49c00588d1b955
   m_configObjects: {}
