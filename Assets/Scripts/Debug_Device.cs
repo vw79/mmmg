@@ -27,6 +27,8 @@ public class Debug_Device : MonoBehaviour
     }
 }
 
+
+#if UNITY_EDITOR
 [CustomEditor(typeof(Debug_Device))]
 public class Debug_Device_Editor : Editor
 {
@@ -42,3 +44,4 @@ public class Debug_Device_Editor : Editor
         }
     }
 }
+#endif
