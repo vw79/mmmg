@@ -10,6 +10,11 @@ public class InfoPanel : MonoBehaviour
     public TextMeshProUGUI cardName;
     public TextMeshProUGUI cardDescription;
 
+    private void Start()
+    {
+        ToggleCardInfo(false);
+    }
+
     public void ShowCardInfo(CardData cardData)
     {
         if (cardData != null)
@@ -17,6 +22,18 @@ public class InfoPanel : MonoBehaviour
             cardImage.sprite = cardData.cardImage;
             cardName.text = cardData.cardName;
             cardDescription.text = cardData.cardDescription;
+            ToggleCardInfo(true);
         }
+        else
+        {
+            ToggleCardInfo(false);
+        }
+    }
+
+    private void ToggleCardInfo(bool isVisible)
+    {
+        cardImage.enabled = isVisible;
+        cardName.enabled = isVisible;
+        cardDescription.enabled = isVisible;
     }
 }
