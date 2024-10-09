@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a1c829d25248244a813e454e28bb6cc, type: 3}
-  m_Name: Attack
+  m_Name: Dagger
   m_EditorClassIdentifier: 
-  attribute: Normal
-  cardName: Attack
+  attribute: Weapon
+  cardName: Dagger
   cardDescription: 
-  cardImage: {fileID: 21300000, guid: 15a88ff3c6fd8af49bb50e1d4fea0684, type: 3}
+  cardImage: {fileID: 21300000, guid: d9f149448ae2bdd40accc419a84ac1f0, type: 3}
   basicDmg: 0
   health: 0
   skill1: 

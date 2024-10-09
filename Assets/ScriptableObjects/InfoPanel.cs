@@ -8,7 +8,9 @@ public class InfoPanel : MonoBehaviour
 {
     public Image cardImage;
     public TextMeshProUGUI cardName;
-    public TextMeshProUGUI cardDescription;
+    public TextMeshProUGUI cardSkill1;
+    public TextMeshProUGUI cardSkill2;
+    public TextMeshProUGUI cardSkill3;
 
     private void Start()
     {
@@ -21,7 +23,9 @@ public class InfoPanel : MonoBehaviour
         {
             cardImage.sprite = cardData.cardImage;
             cardName.text = cardData.cardName;
-            cardDescription.text = cardData.cardDescription;
+            cardSkill1.text = cardData.skill1;
+            cardSkill2.text = cardData.skill2;
+            cardSkill3.text = cardData.skill3;
             ToggleCardInfo(true);
         }
         else
@@ -34,6 +38,8 @@ public class InfoPanel : MonoBehaviour
     {
         cardImage.enabled = isVisible;
         cardName.enabled = isVisible;
-        cardDescription.enabled = isVisible;
+        cardSkill1.enabled = isVisible;
+        cardSkill2.enabled = isVisible;
+        cardSkill3.enabled = isVisible;
     }
 }
