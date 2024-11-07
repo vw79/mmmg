@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Ron.Utility;
 
-public class Player : MonoBehaviour
+public class PlayerTest : MonoBehaviour
 {
     [ReadOnly] public int currentHealth;
     public int initialHealth = 5;
