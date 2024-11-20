@@ -6,13 +6,15 @@ using UnityEngine;
 
 public class CardData : ScriptableObject
 {
+    public string cardID;
+    public string colour;
     public string attribute;
     public string cardName;
-    public string cardDescription;
+    [TextArea] public string cardSkillDescription;
     public Sprite cardImage;
     public int basicDmg;
     public int health;
-    public string skill1;
-    public string skill2;
-    public string skill3;
+    [TextArea] public string skill1;
+    [TextArea] public string skill2;
+    [TextArea] public string skill3;
 }

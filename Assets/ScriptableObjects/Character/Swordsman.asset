@@ -12,14 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1c829d25248244a813e454e28bb6cc, type: 3}
   m_Name: Swordsman
   m_EditorClassIdentifier: 
-  attribute: Character
+  cardID: c00
+  colour: 
+  attribute: Attacker
   cardName: Swordsman
-  cardDescription: Eon I need healing
+  cardSkillDescription: 
   cardImage: {fileID: 21300000, guid: 8e9fbbec49d889640bdc30ef9bb74c44, type: 3}
   basicDmg: 1
   health: 4
-  skill1: +1 damage per 'Weapon' action card held. When attacked, destroy 1 held
-    action card
-  skill2: Deal 1 direct damage to 1 enemy.
-  skill3: Equip a 'Weapon' action card. If equipped, the weapon's special buff is
-    disabled.
+  skill1: 'Skill 1:
+
+    +1 damage per ''Weapon'' action card held. When attacked,
+    destroy 1 held action card.'
+  skill2: 'Skill 2: <space=20> <sprite=0> x1
+
+    Deals 1 damage.'
+  skill3: 'Skill 3: <space=20> <sprite=0> x3
+
+    Equip a ''Weapon'' action card.
+    (If equipped, the weapon''s special buff is disabled).'

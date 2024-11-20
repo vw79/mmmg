@@ -7,12 +7,15 @@ using DG.Tweening;
 public class SwitchToggle : MonoBehaviour
 {
     [SerializeField] RectTransform uiHandle;
-    [SerializeField] List<RectTransform> gameObjectsToMove; // List of GameObjects to move (easily scalable)
+    [SerializeField] List<RectTransform> gameObjectsToMove;
     public Toggle toggle;
+    public bool isEditorMode;
 
     Vector2 handlePosition;
-    List<Vector2> gameObjectsOriginalPos; // Store original positions of all objects in the list
-    private const float moveDistance = 620f; // Define a constant for the move distance to avoid magic numbers
+    List<Vector2> gameObjectsOriginalPos;
+    private const float moveDistance = 620f;
+
+    [SerializeField] private CardSelectionManager cardSelectionManager;
 
     private void Awake()
     {
@@ -37,6 +40,9 @@ public class SwitchToggle : MonoBehaviour
 
     private void OnSwitch(bool isOn)
     {
+        isEditorMode = isOn;
+        cardSelectionManager.ResetSelectedCards();
+
         // Handle the position and color change for the toggle handle
         uiHandle.DOAnchorPos(isOn ? handlePosition * -1 : handlePosition, 0.4f).SetEase(Ease.InOutBack);
         uiHandle.GetComponent<Image>().DOColor(isOn ? Color.green : Color.red, 0.6f);
