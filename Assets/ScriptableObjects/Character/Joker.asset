@@ -13,13 +13,20 @@ MonoBehaviour:
   m_Name: Joker
   m_EditorClassIdentifier: 
   cardID: c05
-  colour: 
-  attribute: Supporter
+  colourSelection: 0
+  attributeSelection: 1
   cardName: Joker
   cardSkillDescription: 
   cardImage: {fileID: 21300000, guid: 15a88ff3c6fd8af49bb50e1d4fea0684, type: 3}
   basicDmg: 1
   health: 0
-  skill1: 
-  skill2: 
-  skill3: 
+  skill1Text: 
+  skill1HexColor: FFFFFF
+  displaySkill1AsPassive: 0
+  skillEnergy1Count: 0
+  skill2Text: 
+  skill2HexColor: FFFFFF
+  skillEnergy2Count: 0
+  skill3Text: 
+  skill3HexColor: FFFFFF
+  skillEnergy3Count: 0

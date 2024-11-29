@@ -7,8 +7,8 @@ using UnityEngine.UI;
 
 public class CardDisplay : MonoBehaviour
 {
-    public CardData cardData; // Holds data for this card
-    public Image cardImage;  // Displays the card's image
+    public CardData cardData;
+    public Image cardImage;
 
     private Button button;
     private InfoPanel infoPanel;
@@ -17,7 +17,6 @@ public class CardDisplay : MonoBehaviour
     public SwitchToggle switchToggle;
 
     private CardSelectionManager cardSelectionManager;
-    private bool isSelected = false;
     private int currentCount = 0;
 
     void Start()
@@ -64,9 +63,11 @@ public class CardDisplay : MonoBehaviour
     {
         if (switchToggle.isEditorMode && cardData != null)
         {
+            if (cardSelectionManager.isSelectCooldown) return;
+
             if (cardData.cardID.Contains("c")) // Character Card
             {
-                bool isSelected = cardSelectionManager.AddOrRemoveCard(cardData.cardID, cardData.attribute);
+                bool isSelected = cardSelectionManager.AddOrRemoveCard(cardData.cardID, cardData.attribute, cardData.colour);
 
                 // Update visual indication of selection
                 count.SetActive(isSelected);
@@ -77,10 +78,21 @@ public class CardDisplay : MonoBehaviour
             }
             else if (cardData.cardID.Contains("a")) // Action Card
             {
-                // Synchronize currentCount with CardSelectionManager
-                bool actionAdded = cardSelectionManager.AddOrRemoveCard(cardData.cardID, cardData.attribute);
-                currentCount = cardSelectionManager.GetActionCardCount(cardData.cardID);
-                UpdateCountDisplay();
+                // Attempt to add or remove action card
+                bool actionAdded = cardSelectionManager.AddOrRemoveCard(cardData.cardID, cardData.attribute, cardData.colour);
+
+                // Update count display only if the action card was successfully added or removed
+                if (actionAdded)
+                {
+                    currentCount = cardSelectionManager.GetActionCardCount(cardData.cardID);
+                    UpdateCountDisplay();
+                }
+                else
+                {
+                    Debug.LogWarning($"Action card {cardData.cardID} could not be added. Maximum limit reached.");
+                    currentCount = cardSelectionManager.GetActionCardCount(cardData.cardID);
+                    UpdateCountDisplay(); // Ensures display is cleared if needed
+                }
             }
         }
         else

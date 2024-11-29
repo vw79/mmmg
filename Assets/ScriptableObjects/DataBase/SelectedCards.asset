@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: SelectedCards
   m_EditorClassIdentifier: 
   selectedCharacterIDs: []
-  selectedActionCardIDs: []
+  selectedActionCardIDs:
+  - a06
+  - a04

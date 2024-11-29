@@ -37,9 +37,9 @@ public class InfoPanel : MonoBehaviour
             if (cardData.cardID.Contains("c"))
             {
                 // Add action point icons using <sprite> tags
-                cardSkill1.text = cardData.skill1;
-                cardSkill2.text = cardData.skill2;
-                cardSkill3.text = cardData.skill3;
+                cardSkill1.text = cardData.GetFormattedSkill1();
+                cardSkill2.text = cardData.GetFormattedSkill2();
+                cardSkill3.text = cardData.GetFormattedSkill3();
 
                 AdjustTextBoxSize(cardAttribute, cardAttributeRect);
                 AdjustTextBoxSize(cardName, cardNameRect);

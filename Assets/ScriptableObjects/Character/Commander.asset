@@ -13,13 +13,20 @@ MonoBehaviour:
   m_Name: Commander
   m_EditorClassIdentifier: 
   cardID: c06
-  colour: 
-  attribute: Defender
+  colourSelection: 0
+  attributeSelection: 2
   cardName: Commander
   cardSkillDescription: 
   cardImage: {fileID: 21300000, guid: 1c27ae1bbf627b34387fc5308b058f68, type: 3}
   basicDmg: 1
   health: 0
-  skill1: 
-  skill2: 
-  skill3: 
+  skill1Text: 
+  skill1HexColor: FFFFFF
+  displaySkill1AsPassive: 0
+  skillEnergy1Count: 0
+  skill2Text: 
+  skill2HexColor: FFFFFF
+  skillEnergy2Count: 0
+  skill3Text: 
+  skill3HexColor: FFFFFF
+  skillEnergy3Count: 0

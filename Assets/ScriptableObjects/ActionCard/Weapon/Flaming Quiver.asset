@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a1c829d25248244a813e454e28bb6cc, type: 3}
-  m_Name: Longsword
+  m_Name: Flaming Quiver
   m_EditorClassIdentifier: 
-  cardID: a03
-  colour: Red
-  attribute: Weapon
-  cardName: Longsword
+  cardID: a07
+  colourSelection: 1
+  attributeSelection: 4
+  cardName: Flaming Quiver
   cardSkillDescription: 
-  cardImage: {fileID: 21300000, guid: 7df82d52675462c46b2ad3527259b027, type: 3}
+  cardImage: {fileID: 21300000, guid: 58448b106497dbf4b91d61ab22bd0977, type: 3}
   basicDmg: 0
   health: 0
   skill1: 

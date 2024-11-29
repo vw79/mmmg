@@ -13,22 +13,20 @@ MonoBehaviour:
   m_Name: Archer
   m_EditorClassIdentifier: 
   cardID: c01
-  colour: 
-  attribute: Attacker
+  colourSelection: 0
+  attributeSelection: 0
   cardName: Archer
   cardSkillDescription: 
   cardImage: {fileID: 21300000, guid: 5847fba2ebdf09743a9e04429aa6ee23, type: 3}
   basicDmg: 1
   health: 4
-  skill1: 'Skill 1:
-
-    Using a ''Quiver,'' ''Bow,'' or ''Arrow'' action card lets
-    this character attack again with the same effect at no cost (can stack on a single
-    target).'
-  skill2: 'Skill 2:
-
-    Deals 1 damage.'
-  skill3: 'Skill 3:
-
-    Select an enemy. Chosen enemy cannot target this character.
-    Fails if this is the only character alive on your team.'
+  skill1Text: 
+  skill1HexColor: FFFFFF
+  displaySkill1AsPassive: 0
+  skillEnergy1Count: 0
+  skill2Text: 
+  skill2HexColor: FFFFFF
+  skillEnergy2Count: 0
+  skill3Text: 
+  skill3HexColor: FFFFFF
+  skillEnergy3Count: 0

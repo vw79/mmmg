@@ -56,7 +56,7 @@ public class SelectedCardData : ScriptableObject
     /// <param name="id">The ID of the action card.</param>
     public void RemoveAllInstancesOfActionCard(string id)
     {
-        selectedActionCardIDs.RemoveAll(actionId => actionId == id);
+        selectedActionCardIDs.RemoveAll(cardID => cardID == id);
     }
 
     /// <summary>

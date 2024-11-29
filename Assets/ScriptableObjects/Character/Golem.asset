@@ -13,13 +13,20 @@ MonoBehaviour:
   m_Name: Golem
   m_EditorClassIdentifier: 
   cardID: c04
-  colour: 
-  attribute: Defender
+  colourSelection: 0
+  attributeSelection: 2
   cardName: Golem
   cardSkillDescription: 
   cardImage: {fileID: 21300000, guid: b71b641cc5688694ba4e81adae0341f1, type: 3}
   basicDmg: 1
   health: 0
-  skill1: 
-  skill2: 
-  skill3: 
+  skill1Text: 
+  skill1HexColor: FFFFFF
+  displaySkill1AsPassive: 0
+  skillEnergy1Count: 0
+  skill2Text: 
+  skill2HexColor: FFFFFF
+  skillEnergy2Count: 0
+  skill3Text: 
+  skill3HexColor: FFFFFF
+  skillEnergy3Count: 0
