@@ -21,9 +21,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f97ef08f9ba3a3f42a96527ed5cd25e1, type: 2}
   - {fileID: 11400000, guid: f85bb86e4fe6678409735bfc8b2e7ce6, type: 2}
   actionCardSO:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 8fe2c6343ed0f8c459085470ba7d9119, type: 2}
+  - {fileID: 11400000, guid: f7c21cc36613b21489d22f79756936d3, type: 2}
+  - {fileID: 11400000, guid: 760c5ada5584b1d4da10343eb6ce1d47, type: 2}
   - {fileID: 11400000, guid: 94931254037451746999e521ad3c3ced, type: 2}
   - {fileID: 11400000, guid: 4b1ad8fdd30515546b79ba48abb91ffb, type: 2}
   - {fileID: 11400000, guid: 624170e0d7dacb845a67693d78e7ca03, type: 2}

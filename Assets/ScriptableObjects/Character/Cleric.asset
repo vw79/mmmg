@@ -19,7 +19,14 @@ MonoBehaviour:
   cardSkillDescription: 
   cardImage: {fileID: 21300000, guid: 55e09e0a2ded2704ea74d2641bf5f466, type: 3}
   basicDmg: 1
-  health: 0
-  skill1: 
-  skill2: 
-  skill3: 
+  health: 5
+  skill1Text: 
+  skill1HexColor: 228B22
+  displaySkill1AsPassive: 0
+  skillEnergy1Count: 2
+  skill2Text: 
+  skill2HexColor: 4169E1
+  skillEnergy2Count: 2
+  skill3Text: 
+  skill3HexColor: 228B22
+  skillEnergy3Count: 2

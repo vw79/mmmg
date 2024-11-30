@@ -22,11 +22,11 @@ MonoBehaviour:
   health: 3
   skill1Text: 
   skill1HexColor: FFFFFF
-  displaySkill1AsPassive: 0
+  displaySkill1AsPassive: 1
   skillEnergy1Count: 0
   skill2Text: 
-  skill2HexColor: FFFFFF
-  skillEnergy2Count: 0
+  skill2HexColor: D04D4D
+  skillEnergy2Count: 1
   skill3Text: 
-  skill3HexColor: FFFFFF
-  skillEnergy3Count: 0
+  skill3HexColor: D04D4D
+  skillEnergy3Count: 4

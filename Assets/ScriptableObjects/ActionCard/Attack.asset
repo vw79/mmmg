@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1c829d25248244a813e454e28bb6cc, type: 3}
   m_Name: Attack
   m_EditorClassIdentifier: 
-  cardID: 
+  cardID: a00
   colourSelection: 1
   attributeSelection: 3
   cardName: Attack
@@ -20,6 +20,13 @@ MonoBehaviour:
   cardImage: {fileID: 21300000, guid: 15a88ff3c6fd8af49bb50e1d4fea0684, type: 3}
   basicDmg: 0
   health: 0
-  skill1: 
-  skill2: 
-  skill3: 
+  skill1Text: 
+  skill1HexColor: FFFFFF
+  displaySkill1AsPassive: 0
+  skillEnergy1Count: 0
+  skill2Text: 
+  skill2HexColor: FFFFFF
+  skillEnergy2Count: 0
+  skill3Text: 
+  skill3HexColor: FFFFFF
+  skillEnergy3Count: 0

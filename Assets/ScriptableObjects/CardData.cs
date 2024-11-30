@@ -8,8 +8,8 @@ public class CardData : ScriptableObject
 {
     public string cardID;
 
-    [Header("Card Colour")]
-    [SerializeField] private CardColour colourSelection;
+    [Header("Card Colour")] //[red = #D04D4D], [green = #228B22], [blue= #4169E1], [silver= #C0C0C0]
+    public CardColour colourSelection;
     public string colour => colourSelection.ToString(); // Return the string value of the selected colour
 
     [Header("Card Attribute")]

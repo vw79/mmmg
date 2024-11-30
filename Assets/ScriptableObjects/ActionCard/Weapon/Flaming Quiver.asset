@@ -16,10 +16,19 @@ MonoBehaviour:
   colourSelection: 1
   attributeSelection: 4
   cardName: Flaming Quiver
-  cardSkillDescription: 
+  cardSkillDescription: After attacking the selected enemy, on the next opponent's
+    turn, the selected enemy will burn and take <color=#D04D4D><b>1 damage</b></color>
+    during its first action only.
   cardImage: {fileID: 21300000, guid: 58448b106497dbf4b91d61ab22bd0977, type: 3}
   basicDmg: 0
   health: 0
-  skill1: 
-  skill2: 
-  skill3: 
+  skill1Text: 
+  skill1HexColor: FFFFFF
+  displaySkill1AsPassive: 0
+  skillEnergy1Count: 0
+  skill2Text: 
+  skill2HexColor: FFFFFF
+  skillEnergy2Count: 0
+  skill3Text: 
+  skill3HexColor: FFFFFF
+  skillEnergy3Count: 0

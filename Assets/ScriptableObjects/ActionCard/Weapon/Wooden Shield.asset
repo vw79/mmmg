@@ -16,10 +16,19 @@ MonoBehaviour:
   colourSelection: 3
   attributeSelection: 4
   cardName: Wooden Shield
-  cardSkillDescription: 
+  cardSkillDescription: This action card can stay on the stage after being used.
+    <color=#4169E1><b>-1 damage</b></color> when taking damage. After that, this
+    card will be destroyed.
   cardImage: {fileID: 21300000, guid: 19ce81483d559304d907150b696bea87, type: 3}
   basicDmg: 0
   health: 0
-  skill1: 
-  skill2: 
-  skill3: 
+  skill1Text: 
+  skill1HexColor: FFFFFF
+  displaySkill1AsPassive: 0
+  skillEnergy1Count: 0
+  skill2Text: 
+  skill2HexColor: FFFFFF
+  skillEnergy2Count: 0
+  skill3Text: 
+  skill3HexColor: FFFFFF
+  skillEnergy3Count: 0

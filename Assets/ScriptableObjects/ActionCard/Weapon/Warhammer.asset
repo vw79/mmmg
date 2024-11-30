@@ -16,10 +16,18 @@ MonoBehaviour:
   colourSelection: 1
   attributeSelection: 4
   cardName: Warhammer
-  cardSkillDescription: 
+  cardSkillDescription: While attacking the enemy, destroy all types of <color=#4169E1><b>SHIELD</b></color>
+    of that enemy before dealing damage.
   cardImage: {fileID: 21300000, guid: 27fb321d966ea1342bb2bd28a0e6c9aa, type: 3}
   basicDmg: 0
   health: 0
-  skill1: 
-  skill2: 
-  skill3: 
+  skill1Text: 
+  skill1HexColor: FFFFFF
+  displaySkill1AsPassive: 0
+  skillEnergy1Count: 0
+  skill2Text: 
+  skill2HexColor: FFFFFF
+  skillEnergy2Count: 0
+  skill3Text: 
+  skill3HexColor: FFFFFF
+  skillEnergy3Count: 0
