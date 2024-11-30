@@ -2319,7 +2319,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1860255020
 Transform:
   m_ObjectHideFlags: 0
@@ -2499,6 +2499,26 @@ PrefabInstance:
       propertyPath: deckButton
       value: 
       objectReference: {fileID: 700513021}
+    - target: {fileID: 5023259859550625149, guid: e6425c9e3cc9e96459220c775e1915d6,
+        type: 3}
+      propertyPath: characterPosition1
+      value: 
+      objectReference: {fileID: 873387683}
+    - target: {fileID: 5023259859550625149, guid: e6425c9e3cc9e96459220c775e1915d6,
+        type: 3}
+      propertyPath: characterPosition2
+      value: 
+      objectReference: {fileID: 1858402558}
+    - target: {fileID: 5023259859550625149, guid: e6425c9e3cc9e96459220c775e1915d6,
+        type: 3}
+      propertyPath: characterPosition3
+      value: 
+      objectReference: {fileID: 623699331}
+    - target: {fileID: 5023259859550625149, guid: e6425c9e3cc9e96459220c775e1915d6,
+        type: 3}
+      propertyPath: characterPosition4
+      value: 
+      objectReference: {fileID: 95662292}
     - target: {fileID: 7264247284384396151, guid: e6425c9e3cc9e96459220c775e1915d6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2607,6 +2627,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1823165369755220890, guid: 114e3209a239fca4aa157c5e6dea9fa3,
+        type: 3}
+      propertyPath: m_Name
+      value: Heart
+      objectReference: {fileID: 0}
     - target: {fileID: 3100070455294411788, guid: 114e3209a239fca4aa157c5e6dea9fa3,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -2626,11 +2651,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3992515139350373517, guid: 114e3209a239fca4aa157c5e6dea9fa3,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4724616621391789414, guid: 114e3209a239fca4aa157c5e6dea9fa3,
         type: 3}
@@ -2655,7 +2675,12 @@ PrefabInstance:
     - target: {fileID: 4951714966228469631, guid: 114e3209a239fca4aa157c5e6dea9fa3,
         type: 3}
       propertyPath: m_Name
-      value: CardPrefab
+      value: CharacterCardPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 4951714966228469631, guid: 114e3209a239fca4aa157c5e6dea9fa3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5288646324951446713, guid: 114e3209a239fca4aa157c5e6dea9fa3,
         type: 3}

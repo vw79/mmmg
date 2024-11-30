@@ -66,6 +66,7 @@ public class CardData : ScriptableObject
         string color = $"#{skill1HexColor}";
         if (displaySkill1AsPassive)
         {
+            skill1HexColor = "C0C0C0";
             return $"Skill 1: <space=20> <color=#C0C0C0><b>[P]</b></color>\n{skill1Text}";
         }
         else

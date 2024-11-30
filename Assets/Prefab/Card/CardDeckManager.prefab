@@ -1186,11 +1186,18 @@ MonoBehaviour:
   drawAnimDuration: 1.5
   uiCardPrefab: {fileID: 1282982771330151421, guid: ba469a61bc4c1894b9748a05c5b6dd2d,
     type: 3}
+  characterCardPrefab: {fileID: 4951714966228469631, guid: 114e3209a239fca4aa157c5e6dea9fa3,
+    type: 3}
   handArea: {fileID: 0}
   cardDeckMesh: {fileID: 5546272356710599665}
   deckButton: {fileID: 0}
+  characterPosition1: {fileID: 0}
+  characterPosition2: {fileID: 0}
+  characterPosition3: {fileID: 0}
+  characterPosition4: {fileID: 0}
   initialPoolSize: 0
   currentPoolSize: 0
+  canDraw: 0
 --- !u!1 &8139452763988686748
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,11 +21,18 @@ public class CardManager : MonoBehaviour
     public GameObject cardBackPrefab;
     public float drawAnimDuration = 2f;
     public GameObject uiCardPrefab;
+    public GameObject characterCardPrefab;
     public Transform handArea;
 
     [Header("Deck Visuals")]
-    public GameObject cardDeckMesh; // The 3D mesh for the card deck
-    public Button deckButton; // The UI button to draw cards
+    public GameObject cardDeckMesh;
+    public Button deckButton;
+
+    [Header("Character Placement")]
+    public Transform characterPosition1;
+    public Transform characterPosition2;
+    public Transform characterPosition3;
+    public Transform characterPosition4;
 
     // Cached card data
     private Dictionary<string, CardData> charactersDictionary = new Dictionary<string, CardData>();
@@ -40,6 +47,7 @@ public class CardManager : MonoBehaviour
     public int currentPoolSize;
     private List<GameObject> cardPool = new List<GameObject>();
     private GameObject cardBackInstance;
+    public bool canDraw;
 
     void Start()
     {
@@ -50,6 +58,7 @@ public class CardManager : MonoBehaviour
         currentPoolSize = initialPoolSize;
 
         InitializeCardBack();
+        PlaceCharactersOnStage();
     }
 
     private void CacheAllCards()
@@ -105,10 +114,69 @@ public class CardManager : MonoBehaviour
         cardBackInstance.SetActive(false);
     }
 
+    private void PlaceCharactersOnStage()
+    {
+        if (selectedCharacterIDs.Count < 4)
+        {
+            Debug.LogWarning("Not enough characters selected to place on stage.");
+            return;
+        }
+
+        // Get the first 4 characters from the selected list
+        for (int i = 0; i < 4; i++)
+        {
+            string characterID = selectedCharacterIDs[i];
+
+            if (charactersDictionary.TryGetValue(characterID, out CardData characterData))
+            {
+                // Instantiate the character card prefab
+                GameObject characterCard = Instantiate(characterCardPrefab, deckPosition.position, Quaternion.identity);
+
+                // Assign data to the card
+                CharacterCard characterCardScript = characterCard.GetComponent<CharacterCard>();
+                if (characterCardScript != null)
+                {
+                    characterCardScript.SetCardData(characterData);
+                }
+
+                // Determine the target position
+                Transform targetPosition = GetCharacterPosition(i);
+
+                // Animate the character card to the target position
+                characterCard.transform.DOMove(targetPosition.position, drawAnimDuration)
+                    .SetEase(Ease.InOutSine)
+                    .OnComplete(() =>
+                    {
+                        canDraw = true;
+                    });
+            }
+            else
+            {
+                Debug.LogWarning($"Character ID {characterID} not found in charactersDictionary!");
+            }
+        }
+    }
+
+    private Transform GetCharacterPosition(int index)
+    {
+        // Return the corresponding position for the character
+        switch (index)
+        {
+            case 0: return characterPosition1;
+            case 1: return characterPosition2;
+            case 2: return characterPosition3;
+            case 3: return characterPosition4;
+            default: return null;
+        }
+    }
+
+
     public void DrawCard(bool isCharacterCard)
     {
-        if (currentPoolSize > 0)
+        if (currentPoolSize > 0 && canDraw)
         {
+            canDraw = false;
+
             // Random
             int randomIndex = Random.Range(0, currentPoolSize);
 
@@ -145,8 +213,8 @@ public class CardManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("No cards left in the pool!");
-        }
+            Debug.LogWarning("canDraw = false or No cards left!");
+        }      
     }
 
     private void AnimateCardBack(CardData cardData, bool isLastCard)
@@ -176,7 +244,6 @@ public class CardManager : MonoBehaviour
             {
                 // Display the card on the canvas
                 DisplayCardOnCanvas(cardData);
-
                 cardBackInstance.SetActive(false);
             });
     }
@@ -203,5 +270,7 @@ public class CardManager : MonoBehaviour
         {
             Debug.LogWarning("HandCard component not found on the instantiated prefab.");
         }
+
+        canDraw = true;
     }
 }

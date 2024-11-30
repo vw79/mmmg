@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc1572589ccebe64f8f9929cee1ec63d, type: 3}
   m_Name: SelectedCards
   m_EditorClassIdentifier: 
-  selectedCharacterIDs: []
+  selectedCharacterIDs:
+  - c00
+  - c01
+  - c02
+  - c03
   selectedActionCardIDs:
   - a06
   - a04

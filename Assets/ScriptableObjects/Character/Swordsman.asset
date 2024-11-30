@@ -22,7 +22,7 @@ MonoBehaviour:
   health: 4
   skill1Text: "+1 damage per <color=#D04D4D><b>Weapon</b></color> action card held.
     \nWhen being attacked, destroy 1 held action card."
-  skill1HexColor: FFFFFF
+  skill1HexColor: C0C0C0
   displaySkill1AsPassive: 1
   skillEnergy1Count: 0
   skill2Text: Deals 1 damage.

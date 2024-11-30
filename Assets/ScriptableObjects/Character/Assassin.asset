@@ -21,7 +21,7 @@ MonoBehaviour:
   basicDmg: 1
   health: 3
   skill1Text: 
-  skill1HexColor: FFFFFF
+  skill1HexColor: C0C0C0
   displaySkill1AsPassive: 1
   skillEnergy1Count: 0
   skill2Text: 
