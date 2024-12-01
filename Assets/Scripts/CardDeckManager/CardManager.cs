@@ -255,10 +255,12 @@ public class CardManager : MonoBehaviour
 
         Vector3 startPosition = deckPosition.position;
         Vector3 endPosition = offScreenPosition.position;
+
+        // Control point now considers the height (Y-axis) of offScreenPosition
         Vector3 controlPoint = new Vector3(
-            startPosition.x - 0.5f,
-            startPosition.y,
-            (startPosition.z + endPosition.z) / 2
+            startPosition.x - 2f, // Adjust X for a nice curve
+            (startPosition.y + endPosition.y) / 2, // Adjust Y for height transition
+            (startPosition.z + endPosition.z) / 2  // Z midpoint
         );
 
         // Animate the cardBackPrefab
