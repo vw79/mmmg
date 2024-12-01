@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a1c829d25248244a813e454e28bb6cc, type: 3}
+  m_Name: c02-Assassin
+  m_EditorClassIdentifier: 
+  cardID: c02
+  colourSelection: 1
+  attributeSelection: 0
+  cardName: Assassin
+  cardSkillDescription: 
+  cardImage: {fileID: 21300000, guid: 58ad6e837ee8a0145bcb802db8c0d9d8, type: 3}
+  basicDmg: 1
+  health: 3
+  skill1Text: When damaged, flip a coin. Guess correctly to evade.
+  skill1HexColor: C0C0C0
+  displaySkill1AsPassive: 1
+  skillEnergy1Count: 0
+  skill2Text: Deals 1 damage.
+  skill2HexColor: D04D4D
+  skillEnergy2Count: 1
+  skill3Text: Set this character's health to 1 and deal damage equal to 1 + lost
+    health to an enemy. <color=#D04D4D><b>This character dies at turn's end. Use
+    once per game.</b></color>
+  skill3HexColor: D04D4D
+  skillEnergy3Count: 4

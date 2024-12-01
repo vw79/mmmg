@@ -5,15 +5,26 @@ using UnityEngine.UI;
 
 public class CardManager : MonoBehaviour
 {
+    public static CardManager Instance { get; private set; }
+
+    // Cached card data
+    private Dictionary<string, CardData> charactersDictionary = new Dictionary<string, CardData>();
+    private Dictionary<string, CardData> actionCardsDictionary = new Dictionary<string, CardData>();
+    //private Dictionary<string, CardData> buffsDictionary = new Dictionary<string, CardData>();
+
+    private List<string> selectedCharacterIDs = new List<string>();
+    private List<string> selectedActionCardIDs = new List<string>();
+
     [Header("Scriptable Objects")]
     public AllCardDatabase allCardDatabase;
     public SelectedCardData selectedCards;
 
-    //private void Awake()
-    //{
-    //    allCardDatabase = GameManager.Instance.allCardDatabase;
-    //    selectedCards = GameManager.Instance.selectedCardData;
-    //}
+    [Header("Card Pool")]
+    public int initialPoolSize;
+    public int currentPoolSize;
+    private List<GameObject> cardPool = new List<GameObject>();
+    private GameObject cardBackInstance;
+    public bool canDraw;
 
     [Header("Draw Card")]
     public Transform deckPosition;
@@ -34,20 +45,26 @@ public class CardManager : MonoBehaviour
     public Transform characterPosition3;
     public Transform characterPosition4;
 
-    // Cached card data
-    private Dictionary<string, CardData> charactersDictionary = new Dictionary<string, CardData>();
-    private Dictionary<string, CardData> actionCardsDictionary = new Dictionary<string, CardData>();
-    //private Dictionary<string, CardData> buffsDictionary = new Dictionary<string, CardData>();
+    [Header("Interactable Areas")]
+    public List<Image> interactableAreas;
+    public Dictionary<Image, CardData> interactableAreaToCardData = new Dictionary<Image, CardData>();
 
-    private List<string> selectedCharacterIDs = new List<string>();
-    private List<string> selectedActionCardIDs = new List<string>();
-
-    [Header("Card Pool")]
-    public int initialPoolSize;
-    public int currentPoolSize;
-    private List<GameObject> cardPool = new List<GameObject>();
-    private GameObject cardBackInstance;
-    public bool canDraw;
+    //private void Awake()
+    //{
+    //    allCardDatabase = GameManager.Instance.allCardDatabase;
+    //    selectedCards = GameManager.Instance.selectedCardData;
+    //}
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -61,9 +78,9 @@ public class CardManager : MonoBehaviour
         PlaceCharactersOnStage();
     }
 
+    #region Cache Data from Scriptable Objects
     private void CacheAllCards()
     {
-        // Populate dictionaries for quick card lookups from each category
         if (allCardDatabase != null)
         {
             AddCardsToDictionary(allCardDatabase.charactersSO, charactersDictionary, "Character");
@@ -73,6 +90,19 @@ public class CardManager : MonoBehaviour
         else
         {
             Debug.LogWarning("AllCardDatabase is null!");
+        }
+    }
+
+    private void CacheSelectedCardIDs()
+    {
+        if (selectedCards != null)
+        {
+            selectedCharacterIDs = new List<string>(selectedCards.selectedCharacterIDs);
+            selectedActionCardIDs = new List<string>(selectedCards.selectedActionCardIDs);
+        }
+        else
+        {
+            Debug.LogWarning("SelectedCards is null!");
         }
     }
 
@@ -93,73 +123,11 @@ public class CardManager : MonoBehaviour
             }
         }
     }
+    #endregion
 
-    private void CacheSelectedCardIDs()
-    {
-        // Cache selected card IDs from SelectedCards SO
-        if (selectedCards != null)
-        {
-            selectedCharacterIDs = new List<string>(selectedCards.selectedCharacterIDs);
-            selectedActionCardIDs = new List<string>(selectedCards.selectedActionCardIDs);
-        }
-        else
-        {
-            Debug.LogWarning("SelectedCards is null!");
-        }
-    }
-
-    private void InitializeCardBack()
-    {
-        cardBackInstance = Instantiate(cardBackPrefab, deckPosition.position, Quaternion.identity);
-        cardBackInstance.SetActive(false);
-    }
-
-    private void PlaceCharactersOnStage()
-    {
-        if (selectedCharacterIDs.Count < 4)
-        {
-            Debug.LogWarning("Not enough characters selected to place on stage.");
-            return;
-        }
-
-        // Get the first 4 characters from the selected list
-        for (int i = 0; i < 4; i++)
-        {
-            string characterID = selectedCharacterIDs[i];
-
-            if (charactersDictionary.TryGetValue(characterID, out CardData characterData))
-            {
-                // Instantiate the character card prefab
-                GameObject characterCard = Instantiate(characterCardPrefab, deckPosition.position, Quaternion.identity);
-
-                // Assign data to the card
-                CharacterCard characterCardScript = characterCard.GetComponent<CharacterCard>();
-                if (characterCardScript != null)
-                {
-                    characterCardScript.SetCardData(characterData);
-                }
-
-                // Determine the target position
-                Transform targetPosition = GetCharacterPosition(i);
-
-                // Animate the character card to the target position
-                characterCard.transform.DOMove(targetPosition.position, drawAnimDuration)
-                    .SetEase(Ease.InOutSine)
-                    .OnComplete(() =>
-                    {
-                        canDraw = true;
-                    });
-            }
-            else
-            {
-                Debug.LogWarning($"Character ID {characterID} not found in charactersDictionary!");
-            }
-        }
-    }
-
+    #region Place selected characters on stage
     private Transform GetCharacterPosition(int index)
     {
-        // Return the corresponding position for the character
         switch (index)
         {
             case 0: return characterPosition1;
@@ -170,6 +138,63 @@ public class CardManager : MonoBehaviour
         }
     }
 
+    private void PlaceCharactersOnStage()
+    {
+        if (selectedCharacterIDs.Count < 4)
+        {
+            Debug.LogWarning("Not enough characters selected to place on stage.");
+            return;
+        }
+
+        if (interactableAreas.Count < selectedCharacterIDs.Count)
+        {
+            Debug.LogWarning("Not enough interactable areas for selected characters.");
+            return;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            string characterID = selectedCharacterIDs[i];
+
+            if (charactersDictionary.TryGetValue(characterID, out CardData characterData))
+            {
+                GameObject characterCard = Instantiate(characterCardPrefab, deckPosition.position, Quaternion.identity);
+
+                CharacterCard characterCardScript = characterCard.GetComponent<CharacterCard>();
+                if (characterCardScript != null)
+                {
+                    characterCardScript.SetCardData(characterData);
+                }
+
+                Transform targetPosition = GetCharacterPosition(i);
+
+                characterCard.transform.DOMove(targetPosition.position, drawAnimDuration)
+                    .SetEase(Ease.InOutSine)
+                    .OnComplete(() =>
+                    {
+                        canDraw = true;
+                    });
+
+                if (i < interactableAreas.Count)
+                {
+                    interactableAreaToCardData[interactableAreas[i]] = characterData;
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"Character ID {characterID} not found in charactersDictionary!");
+            }
+        }
+    }
+    #endregion
+
+    #region Card Drawing
+    // Mock up for card drawing
+    private void InitializeCardBack()
+    {
+        cardBackInstance = Instantiate(cardBackPrefab, deckPosition.position, Quaternion.identity);
+        cardBackInstance.SetActive(false);
+    }
 
     public void DrawCard(bool isCharacterCard)
     {
@@ -184,13 +209,12 @@ public class CardManager : MonoBehaviour
             string randomCardID = selectedActionCardIDs[randomIndex];
 
             // Debug: Print the random index and card ID
-            Debug.Log($"Random Index: {randomIndex}, Card ID: {randomCardID}");
+            //Debug.Log($"Random Index: {randomIndex}, Card ID: {randomCardID}");
 
             // Find card data in the dictionary using cardID
             if (actionCardsDictionary.TryGetValue(randomCardID, out CardData cardData))
             {
-                Debug.Log($"Found card in dictionary: {cardData.cardID} - {cardData.cardName}");
-                Debug.Log($"Card Colour: {cardData.colour}");
+                Debug.Log($"Found card in dictionary: {cardData.cardID} - {cardData.cardName} and Card Colour: {cardData.colour}");
 
                 bool isLastCard = currentPoolSize == 1;
 
@@ -204,7 +228,7 @@ public class CardManager : MonoBehaviour
                 currentPoolSize--;
 
                 // Debug: Print remaining cards in the pool
-                Debug.Log($"Cards remaining in pool: {currentPoolSize}");
+                //Debug.Log($"Cards remaining in pool: {currentPoolSize}");
             }
             else
             {
@@ -250,8 +274,6 @@ public class CardManager : MonoBehaviour
 
     private void RemoveCardFromPool(int index, string cardID)
     {
-        // Remove card data from the pool and dictionary
-        actionCardsDictionary.Remove(cardID);
         selectedActionCardIDs.RemoveAt(index);
     }
 
@@ -260,17 +282,18 @@ public class CardManager : MonoBehaviour
         GameObject uiCard = Instantiate(uiCardPrefab, handArea);
 
         HandCard handCard = uiCard.GetComponent<HandCard>();
-
         if (handCard != null)
         {
-            // Pass the card data to the HandCard script for display
             handCard.SetCardData(cardData);
         }
-        else
+
+        CustomHandLayout handLayout = handArea.GetComponent<CustomHandLayout>();
+        if (handLayout != null)
         {
-            Debug.LogWarning("HandCard component not found on the instantiated prefab.");
+            handLayout.AddCard(uiCard.GetComponent<RectTransform>());
         }
 
         canDraw = true;
     }
+    #endregion
 }

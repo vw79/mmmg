@@ -8,7 +8,7 @@ public class AllCardDatabase : ScriptableObject
     [Tooltip("Character IDs: c00 - c06")]
     public List<CardData> charactersSO;
 
-    [Tooltip("Action IDs: a00 - a27")]
+    [Tooltip("Action IDs: a00 - a26")]
     public List<CardData> actionCardSO;
 
     [Tooltip("Buff IDs: b00 - b01")]
