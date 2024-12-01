@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a1c829d25248244a813e454e28bb6cc, type: 3}
+  m_Name: Dagger
+  m_EditorClassIdentifier: 
+  cardID: a04
+  colourSelection: 1
+  attributeSelection: 4
+  cardName: Dagger
+  cardSkillDescription: While holding this action card, deal <color=#D04D4D><b>+2
+    damage</b></color> to the enemy in front of it. No damage will be taken to other
+    enemies, except when the holder is taunted.
+  cardImage: {fileID: 21300000, guid: d9f149448ae2bdd40accc419a84ac1f0, type: 3}
+  basicDmg: 0
+  health: 0
+  skill1Text: 
+  skill1HexColor: FFFFFF
+  displaySkill1AsPassive: 0
+  skillEnergy1Count: 0
+  skill2Text: 
+  skill2HexColor: FFFFFF
+  skillEnergy2Count: 0
+  skill3Text: 
+  skill3HexColor: FFFFFF
+  skillEnergy3Count: 0

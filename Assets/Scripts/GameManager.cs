@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     [ReadOnly] public int currentRound = 1;
     [ReadOnly] public TurnState gameState = TurnState.PlayerOneTurn;
-    public Player[] players = new Player[2];
+    public PlayerTest[] players = new PlayerTest[2];
 
     private void Start()
     {
@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Game Start.");
 
         // Initialize every players.
-        foreach(Player player in players)
+        foreach(PlayerTest player in players)
         {
             player.currentHealth = player.initialHealth;
             player.canMove = false;

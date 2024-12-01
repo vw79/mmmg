@@ -12,12 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1c829d25248244a813e454e28bb6cc, type: 3}
   m_Name: Archer
   m_EditorClassIdentifier: 
-  attribute: Character
+  cardID: c01
+  colourSelection: 0
+  attributeSelection: 0
   cardName: Archer
-  cardDescription: Eon is Joker
+  cardSkillDescription: 
   cardImage: {fileID: 21300000, guid: 5847fba2ebdf09743a9e04429aa6ee23, type: 3}
-  basicDmg: 0
-  health: 0
-  skill1: 
-  skill2: 
-  skill3: 
+  basicDmg: 1
+  health: 4
+  skill1Text: Using a <color=#D04D4D><b>Quiver</b></color> action card lets this
+    character attack again with the same effect at no cost (can stack).
+  skill1HexColor: C0C0C0
+  displaySkill1AsPassive: 1
+  skillEnergy1Count: 0
+  skill2Text: Deals 1 damage.
+  skill2HexColor: D04D4D
+  skillEnergy2Count: 1
+  skill3Text: Select an enemy. Chosen enemy cannot terget this character. (Does not
+    apply if this is the only character alive)
+  skill3HexColor: 4169E1
+  skillEnergy3Count: 2

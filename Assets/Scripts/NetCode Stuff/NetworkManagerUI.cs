@@ -15,14 +15,17 @@ public class NetworkManagerUI : MonoBehaviour
         hostButton.onClick.AddListener(() =>
         {
             NetworkManager.Singleton.StartHost();
+            gameObject.SetActive(false);
         });
         clientButton.onClick.AddListener(() =>
         {
             NetworkManager.Singleton.StartClient();
+            gameObject.SetActive(false);
         });
         serverButton.onClick.AddListener(() => 
         {
             NetworkManager.Singleton.StartServer();
+            gameObject.SetActive(false);
         });
     }
     // Start is called before the first frame update
