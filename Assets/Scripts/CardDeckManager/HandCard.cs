@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -15,8 +13,14 @@ public class HandCard : MonoBehaviour
     public string cardColour;
     public string cardAttribute;
 
-    private CardData cardData;
+    private HandCardPreview handCardPreview;
 
+    public CardData cardData;
+
+    private void Start()
+    {
+        handCardPreview = HandCardPreview.Instance;
+    }
     public void SetCardData(CardData data)
     {
         cardData = data;
@@ -40,7 +44,6 @@ public class HandCard : MonoBehaviour
     {
         Color frameColor;
 
-        // Match the color string to the corresponding hex value
         switch (color)
         {
             case "Red":
@@ -53,12 +56,11 @@ public class HandCard : MonoBehaviour
                 frameColor = HexToColor("#228B22");
                 break;
             default:
-                frameColor = Color.white; // Default frame color
+                frameColor = Color.white;
                 Debug.LogWarning($"Unrecognized color: {color}. Setting frame to default (white).");
                 break;
         }
 
-        // Apply the color to the frame image
         if (frameImage != null)
         {
             frameImage.color = frameColor;
@@ -78,5 +80,21 @@ public class HandCard : MonoBehaviour
 
         Debug.LogWarning($"Invalid hex color string: {hex}. Returning default white color.");
         return Color.white;
+    }
+
+    public void TriggerCardPreview()
+    {
+        if (handCardPreview != null && cardData != null)
+        {
+            handCardPreview.SetPreviewData(cardData); // Update and show preview
+        }
+        else if (handCardPreview != null)
+        {
+            handCardPreview.HidePreview(); // Hide preview if no data is available
+        }
+        else
+        {
+            Debug.LogWarning("HandCardPreview reference is null. Cannot update or hide preview.");
+        }
     }
 }

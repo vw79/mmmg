@@ -15,8 +15,15 @@ MonoBehaviour:
   selectedCharacterIDs:
   - c00
   - c01
-  - c02
+  - c04
   - c03
   selectedActionCardIDs:
-  - a06
-  - a04
+  - a11
+  - a07
+  - a25
+  - a24
+  - a23
+  - a22
+  - a21
+  - a20
+  - a19

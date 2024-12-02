@@ -24,6 +24,9 @@ public class ResolutionManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0;
     }
 
     void Start()
@@ -31,7 +34,7 @@ public class ResolutionManager : MonoBehaviour
         int currentWidth = Screen.currentResolution.width;
         int currentHeight = Screen.currentResolution.height;
 
-        Debug.Log("Current Device Resolution: " + currentWidth + "x" + currentHeight);
+        //Debug.Log("Current Device Resolution: " + currentWidth + "x" + currentHeight);
         SetClosest16by9Resolution(currentWidth, currentHeight);
     }
 
@@ -55,7 +58,7 @@ public class ResolutionManager : MonoBehaviour
         }
         Screen.SetResolution(closestResolution.x, closestResolution.y, true);
 
-        Debug.Log($"Set Resolution to: {closestResolution.x}x{closestResolution.y} (16:9)");
+        //Debug.Log($"Set Resolution to: {closestResolution.x}x{closestResolution.y} (16:9)");
     }
 
     void OnGUI()

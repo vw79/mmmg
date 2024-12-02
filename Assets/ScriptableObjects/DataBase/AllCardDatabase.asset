@@ -22,11 +22,30 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f85bb86e4fe6678409735bfc8b2e7ce6, type: 2}
   actionCardSO:
   - {fileID: 11400000, guid: 8fe2c6343ed0f8c459085470ba7d9119, type: 2}
-  - {fileID: 11400000, guid: f7c21cc36613b21489d22f79756936d3, type: 2}
   - {fileID: 11400000, guid: 760c5ada5584b1d4da10343eb6ce1d47, type: 2}
+  - {fileID: 11400000, guid: f7c21cc36613b21489d22f79756936d3, type: 2}
   - {fileID: 11400000, guid: 94931254037451746999e521ad3c3ced, type: 2}
   - {fileID: 11400000, guid: 4b1ad8fdd30515546b79ba48abb91ffb, type: 2}
   - {fileID: 11400000, guid: 624170e0d7dacb845a67693d78e7ca03, type: 2}
   - {fileID: 11400000, guid: 06e6db4cc4158324b8e477c4e28cb08f, type: 2}
   - {fileID: 11400000, guid: 16dba5a8c8873e94a9d98a510d763c3f, type: 2}
+  - {fileID: 11400000, guid: c017ac4e199401145bf49718930b6df1, type: 2}
+  - {fileID: 11400000, guid: 13ef58d5166a5f644aac299f81ddecb0, type: 2}
+  - {fileID: 11400000, guid: 8983d699da1e97a40ad962f0ef71fb34, type: 2}
+  - {fileID: 11400000, guid: 0e0749ae6e808b24fb2090191bc0c904, type: 2}
+  - {fileID: 11400000, guid: a6620bf438f613146b40e493cd5c5e8e, type: 2}
+  - {fileID: 11400000, guid: 1a66b1717465be1429798806c3531ace, type: 2}
+  - {fileID: 11400000, guid: d214391bf7133834b8096fcf5ffdf600, type: 2}
+  - {fileID: 11400000, guid: 5f9c1628716550e45b53220ca5fd543f, type: 2}
+  - {fileID: 11400000, guid: f7c3b57e53d66d24fbb4303bd6cb40f7, type: 2}
+  - {fileID: 11400000, guid: 1bd4b9deab700f841b65a02581df4e8d, type: 2}
+  - {fileID: 11400000, guid: 4f0ce2ed18a11034b84c61b0170962b5, type: 2}
+  - {fileID: 11400000, guid: 526cd51e966f1bb469cacdf2d7e85d11, type: 2}
+  - {fileID: 11400000, guid: 37753ba562e910d43a92cc824b56b7ed, type: 2}
+  - {fileID: 11400000, guid: 6dec5128b9c574e419bbba98191f0b7f, type: 2}
+  - {fileID: 11400000, guid: ebe45bc047abcf247afa792ddfbca317, type: 2}
+  - {fileID: 11400000, guid: 483af598b4451f349943f43c549ced7d, type: 2}
+  - {fileID: 11400000, guid: 9f0cb8494a63c924cb06524b06d3db0d, type: 2}
+  - {fileID: 11400000, guid: 8321fc7439c5c8646b5452d35eaa0cb9, type: 2}
+  - {fileID: 11400000, guid: 12e8ca623b250324291427e8b6c34887, type: 2}
   buffSO: []

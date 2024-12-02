@@ -1179,6 +1179,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allCardDatabase: {fileID: 11400000, guid: 59d0c3fe14677544597822699f7f0df9, type: 2}
   selectedCards: {fileID: 11400000, guid: ca0dda667e31ce142bdb582214584602, type: 2}
+  initialPoolSize: 0
+  currentPoolSize: 0
+  canDraw: 0
   deckPosition: {fileID: 7264247284384396151}
   offScreenPosition: {fileID: 1068313517808895497}
   cardBackPrefab: {fileID: 6699701093494893880, guid: abd43eba09aacb44799a7d4e1c09ae0f,
@@ -1195,9 +1198,11 @@ MonoBehaviour:
   characterPosition2: {fileID: 0}
   characterPosition3: {fileID: 0}
   characterPosition4: {fileID: 0}
-  initialPoolSize: 0
-  currentPoolSize: 0
-  canDraw: 0
+  interactableAreas:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &8139452763988686748
 GameObject:
   m_ObjectHideFlags: 0

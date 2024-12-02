@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class InfoPanel : MonoBehaviour
 {
     [SerializeField] private Image cardImage;
+    [SerializeField] private Image heartImage;
+    [SerializeField] private Image colourImage;
+    [SerializeField] private TextMeshProUGUI heartTxt;
     [SerializeField] private TextMeshProUGUI cardAttribute;
     [SerializeField] private TextMeshProUGUI cardName;
     [SerializeField] private TextMeshProUGUI cardSkill1;
@@ -20,6 +24,9 @@ public class InfoPanel : MonoBehaviour
     [SerializeField] private RectTransform cardSkill3Rect;
 
     [SerializeField] private ScrollRect scrollRect;
+    [SerializeField] private float minHeight = 50f;
+    [SerializeField] private float maxHeight = 300f;
+    private Tween heartBumpTween;
 
     private void Start()
     {
@@ -30,13 +37,18 @@ public class InfoPanel : MonoBehaviour
     {
         if (cardData != null)
         {
+            // Set card image and other details
             cardImage.sprite = cardData.cardImage;
             cardAttribute.text = cardData.attribute;
             cardName.text = cardData.cardName;
 
+            // Always show and set the colour image
+            colourImage.color = ParseColor(cardData.colour);
+            colourImage.enabled = true;
+
             if (cardData.cardID.Contains("c"))
             {
-                // Add action point icons using <sprite> tags
+                // For character cards
                 cardSkill1.text = cardData.GetFormattedSkill1();
                 cardSkill2.text = cardData.GetFormattedSkill2();
                 cardSkill3.text = cardData.GetFormattedSkill3();
@@ -47,15 +59,25 @@ public class InfoPanel : MonoBehaviour
                 AdjustTextBoxSize(cardSkill2, cardSkill2Rect);
                 AdjustTextBoxSize(cardSkill3, cardSkill3Rect);
 
+                heartImage.enabled = true;
+                heartTxt.enabled = true;
+                heartTxt.text = cardData.health.ToString();
+
+                StartBumpingHeart();
                 ToggleCardInfo(true, true);
             }
             else
             {
+                // For non-character cards
                 cardSkill1.text = cardData.cardSkillDescription;
                 AdjustTextBoxSize(cardAttribute, cardAttributeRect);
                 AdjustTextBoxSize(cardName, cardNameRect);
                 AdjustTextBoxSize(cardSkill1, cardSkill1Rect);
 
+                // Hide heart image and text
+                heartImage.enabled = false;
+                heartTxt.enabled = false;
+                StopBumpingHeart();
                 ToggleCardInfo(true, false);
             }
 
@@ -65,8 +87,6 @@ public class InfoPanel : MonoBehaviour
         {
             ToggleCardInfo(false, false);
         }
-
-        
     }
 
     private void ResetScrollPosition()
@@ -84,6 +104,8 @@ public class InfoPanel : MonoBehaviour
 
         float preferredHeight = textComponent.preferredHeight;
 
+        preferredHeight = Mathf.Clamp(preferredHeight, minHeight, maxHeight);
+
         Vector2 sizeDelta = rectTransform.sizeDelta;
         sizeDelta.y = preferredHeight;
         rectTransform.sizeDelta = sizeDelta;
@@ -95,8 +117,66 @@ public class InfoPanel : MonoBehaviour
         cardAttribute.enabled = isVisible;
         cardName.enabled = isVisible;
         cardSkill1.enabled = isVisible;
+        colourImage.enabled = isVisible;
 
         cardSkill2.enabled = isVisible && isCharacterCard;
         cardSkill3.enabled = isVisible && isCharacterCard;
+
+        if (!isCharacterCard)
+        {
+            heartImage.enabled = false;
+            heartTxt.enabled = false;
+        }
+    }
+
+    private Color ParseColor(string colorString)
+    {
+        switch (colorString)
+        {
+            case "Red":
+                if (ColorUtility.TryParseHtmlString("#D04D4D", out Color red))
+                    return red;
+                break;
+            case "Green":
+                if (ColorUtility.TryParseHtmlString("#228B22", out Color green))
+                    return green;
+                break;
+            case "Blue":
+                if (ColorUtility.TryParseHtmlString("#4169E1", out Color blue))
+                    return blue;
+                break;
+            default:
+                Debug.LogWarning($"Unknown color string: {colorString}. Defaulting to white.");
+                return Color.white;
+        }
+
+        // Fallback in case of hex parsing errors
+        Debug.LogWarning($"Failed to parse color string: {colorString}. Defaulting to white.");
+        return Color.white;
+    }
+
+    private void StartBumpingHeart()
+    {
+        if (heartImage != null)
+        {
+            StopBumpingHeart();
+
+            heartBumpTween = heartImage.transform.DOScale(new Vector3(1.2f, 1.2f, 1f), 0.5f)
+                .SetEase(Ease.InOutQuad) 
+                .SetLoops(-1, LoopType.Yoyo); 
+        }
+    }
+
+    private void StopBumpingHeart()
+    {
+        if (heartBumpTween != null && heartBumpTween.IsActive())
+        {
+            heartBumpTween.Kill();
+        }
+
+        if (heartImage != null)
+        {
+            heartImage.transform.localScale = Vector3.one;
+        }
     }
 }

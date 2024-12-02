@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a1c829d25248244a813e454e28bb6cc, type: 3}
+  m_Name: a13-Farmland
+  m_EditorClassIdentifier: 
+  cardID: a13
+  colourSelection: 2
+  attributeSelection: 6
+  cardName: Farmland
+  cardSkillDescription: Select 3 cards above the deck and pick any one of them. Other
+    cards will be placed at the bottom of the deck.
+  cardImage: {fileID: 21300000, guid: 25476ff15a8802b46b930e19aa4f32e9, type: 3}
+  basicDmg: 0
+  health: 0
+  skill1Text: 
+  skill1HexColor: FFFFFF
+  displaySkill1AsPassive: 0
+  skillEnergy1Count: 0
+  skill2Text: 
+  skill2HexColor: FFFFFF
+  skillEnergy2Count: 0
+  skill3Text: 
+  skill3HexColor: FFFFFF
+  skillEnergy3Count: 0
