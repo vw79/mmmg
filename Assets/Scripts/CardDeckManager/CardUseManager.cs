@@ -55,6 +55,7 @@ public class CardUseManager : MonoBehaviour
             {
                 area.gameObject.SetActive(true);
                 area.GetComponent<CanvasGroup>().alpha = 0;
+                area.transform.localScale = Vector3.one; // Reset scale
                 area.GetComponent<CanvasGroup>().DOFade(1, 0.3f);
             }
         }
@@ -71,6 +72,26 @@ public class CardUseManager : MonoBehaviour
         foreach (var area in interactableAreas)
         {
             if (area != null)
+            {
+                area.GetComponent<CanvasGroup>().DOFade(0, 0.3f).OnComplete(() =>
+                {
+                    area.gameObject.SetActive(false);
+                });
+            }
+        }
+    }
+
+    private void HideInteractableAreasExcept(Image areaToExclude)
+    {
+        if (currentHoveredArea != null && currentHoveredArea != areaToExclude)
+        {
+            ResetAreaColor(currentHoveredArea);
+            currentHoveredArea = null;
+        }
+
+        foreach (var area in interactableAreas)
+        {
+            if (area != null && area != areaToExclude)
             {
                 area.GetComponent<CanvasGroup>().DOFade(0, 0.3f).OnComplete(() =>
                 {
@@ -149,6 +170,41 @@ public class CardUseManager : MonoBehaviour
         {
             Debug.Log($"Card '{usedCardData.cardName}' color does not match with '{hoveredCardData.cardName}'!");
             ReturnCardToOriginalPosition(card);
+        }
+    }
+
+    private void HandleCardUsage(GameObject card, CardData usedCardData, CardData hoveredCardData)
+    {
+        Debug.Log($"Card '{usedCardData.cardName}' is used on '{hoveredCardData.cardName}'.");
+
+        // Synchronize card usage across clients (optional netcode integration)
+        SynchronizeCardUsage(card, usedCardData, hoveredCardData);
+
+        // Hide other interactable areas except the used one
+        HideInteractableAreasExcept(currentHoveredArea);
+
+        // Animate the used area
+        AnimateUsedArea(currentHoveredArea);
+
+        // Destroy the card
+        Destroy(card);
+    }
+
+    private void AnimateUsedArea(Image area)
+    {
+        if (area != null)
+        {
+            // Scale up slightly
+            area.transform.DOScale(1.3f, 0.2f).OnComplete(() =>
+            {
+                // Then fade out and hide after a delay
+                area.GetComponent<CanvasGroup>().DOFade(0, 0.3f).SetDelay(0.2f).OnComplete(() =>
+                {
+                    area.gameObject.SetActive(false);
+                    // Reset scale
+                    area.transform.localScale = Vector3.one;
+                });
+            });
         }
     }
 
@@ -234,20 +290,7 @@ public class CardUseManager : MonoBehaviour
     #endregion
 
     #region Netcode
-    //Eon Pls Work Here
-    private void HandleCardUsage(GameObject card, CardData usedCardData, CardData hoveredCardData)
-    {
-        Debug.Log($"Card '{usedCardData.cardName}' is used on '{hoveredCardData.cardName}'.");
-
-        // Synchronize card usage across clients (optional netcode integration)
-        SynchronizeCardUsage(card, usedCardData, hoveredCardData);
-
-        // Hide interactable areas
-        HideInteractableAreas();
-
-        // Destroy the card
-        Destroy(card);
-    }
+    // Netcode methods (if any)
 
     private void SynchronizeCardUsage(GameObject card, CardData usedCardData, CardData hoveredCardData)
     {

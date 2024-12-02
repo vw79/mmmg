@@ -35,7 +35,7 @@ public class CardSelectionManager : MonoBehaviour
     private int totalCharacterCount = 0;
 
     private int weaponCount = 0;
-    private int consumablesCount = 0;
+    private int consumableCount = 0;
     private int structureCount = 0;
     private int eventCount = 0;
     private int magicCount = 0;
@@ -221,9 +221,9 @@ public class CardSelectionManager : MonoBehaviour
                 weaponCount += adjustment;
                 UpdateTextWithAnimation(weaponTxt, weaponCount, isAdding);
                 break;
-            case "Consumables":
-                consumablesCount += adjustment;
-                UpdateTextWithAnimation(consumablesTxt, consumablesCount, isAdding);
+            case "Consumable":
+                consumableCount += adjustment;
+                UpdateTextWithAnimation(consumablesTxt, consumableCount, isAdding);
                 break;
             case "Structure":
                 structureCount += adjustment;
@@ -299,11 +299,11 @@ public class CardSelectionManager : MonoBehaviour
         attackerTxt.text = "0";
         defenderTxt.text = "0";
         supporterTxt.text = "0";
-        totalCharacterTxt.text = "0 / 6";
+        totalCharacterTxt.text = "0 / 4";
 
         // Reset action card counts and UI
         weaponCount = 0;
-        consumablesCount = 0;
+        consumableCount = 0;
         structureCount = 0;
         eventCount = 0;
         magicCount = 0;
@@ -313,7 +313,7 @@ public class CardSelectionManager : MonoBehaviour
         structureTxt.text = "0";
         eventTxt.text = "0";
         magicTxt.text = "0";
-        totalActionTxt.text = "0 / 40";
+        totalActionTxt.text = "0 / 20";
 
         // Reset colour counts and UI
         redCount = 0;
