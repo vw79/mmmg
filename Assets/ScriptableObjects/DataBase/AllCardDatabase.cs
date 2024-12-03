@@ -13,4 +13,7 @@ public class AllCardDatabase : ScriptableObject
 
     [Tooltip("Buff IDs: b00 - b01")]
     public List<CardData> buffSO;
+
+    [Tooltip("VFX IDs: v00 - v06")]
+    public List<GameObject> vfx;
 }

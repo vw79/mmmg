@@ -12,6 +12,9 @@ public class CardManager : MonoBehaviour
     private Dictionary<string, CardData> actionCardsDictionary = new Dictionary<string, CardData>();
     //private Dictionary<string, CardData> buffsDictionary = new Dictionary<string, CardData>();
 
+    [Header("VFX Mapping")]
+    public Dictionary<string, GameObject> characterVfxDictionary = new Dictionary<string, GameObject>();
+
     private List<string> selectedCharacterIDs = new List<string>();
     private List<string> selectedActionCardIDs = new List<string>();
 
@@ -70,6 +73,7 @@ public class CardManager : MonoBehaviour
     {
         CacheAllCards();
         CacheSelectedCardIDs();
+        MapCharacterVfx();
 
         initialPoolSize = selectedActionCardIDs.Count;
         currentPoolSize = initialPoolSize;
@@ -121,6 +125,42 @@ public class CardManager : MonoBehaviour
                     Debug.LogWarning($"Duplicate card ID found in {category} category: {card.cardID}. Ignoring duplicate.");
                 }
             }
+        }
+    }
+    #endregion
+
+    #region Map VFX to Characters
+    private void MapCharacterVfx()
+    {
+        if (allCardDatabase != null && allCardDatabase.charactersSO != null && allCardDatabase.vfx != null)
+        {
+            if (allCardDatabase.charactersSO.Count != allCardDatabase.vfx.Count)
+            {
+                Debug.LogWarning("Character list and VFX list sizes do not match!");
+                return;
+            }
+
+            for (int i = 0; i < allCardDatabase.charactersSO.Count; i++)
+            {
+                string characterID = allCardDatabase.charactersSO[i].cardID;
+                GameObject vfx = allCardDatabase.vfx[i];
+
+                if (!characterVfxDictionary.ContainsKey(characterID))
+                {
+                    characterVfxDictionary.Add(characterID, vfx);
+                    Debug.Log($"Character ID: {characterID} - VFX: {vfx.name}");
+                }
+                else
+                {
+                    Debug.LogWarning($"Duplicate VFX mapping for character ID: {characterID}. Ignoring duplicate.");
+                }
+            }
+
+            Debug.Log("VFX mapping completed successfully.");
+        }
+        else
+        {
+            Debug.LogWarning("Cannot map VFX - check allCardDatabase configuration.");
         }
     }
     #endregion

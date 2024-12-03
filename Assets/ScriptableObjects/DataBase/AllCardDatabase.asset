@@ -49,3 +49,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8321fc7439c5c8646b5452d35eaa0cb9, type: 2}
   - {fileID: 11400000, guid: 12e8ca623b250324291427e8b6c34887, type: 2}
   buffSO: []
+  vfx: []
