@@ -1,5 +1,7 @@
 using DG.Tweening;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +20,9 @@ public class CardManager : MonoBehaviour
     private List<string> selectedCharacterIDs = new List<string>();
     private List<string> selectedActionCardIDs = new List<string>();
 
+    [Header("Opponent's Card Data")]
+    public List<string> opponentCharacterIDs = new List<string>();
+
     [Header("Scriptable Objects")]
     public AllCardDatabase allCardDatabase;
     public SelectedCardData selectedCards;
@@ -27,16 +32,20 @@ public class CardManager : MonoBehaviour
     public int currentPoolSize;
     private List<GameObject> cardPool = new List<GameObject>();
     private GameObject cardBackInstance;
+    private GameObject opponentCardBackInstance;
     public bool canDraw;
 
     [Header("Draw Card")]
     public Transform deckPosition;
+    public Transform opponentDeckPosition;
     public Transform offScreenPosition;
+    public Transform opponentOffScreenPosition;
     public GameObject cardBackPrefab;
     public float drawAnimDuration = 2f;
     public GameObject uiCardPrefab;
     public GameObject characterCardPrefab;
     public Transform handArea;
+    public Transform enemyHandArea;
 
     [Header("Deck Visuals")]
     public GameObject cardDeckMesh;
@@ -47,10 +56,18 @@ public class CardManager : MonoBehaviour
     public Transform characterPosition2;
     public Transform characterPosition3;
     public Transform characterPosition4;
+    [Header("Enemy Character Placement")]
+    public Transform enemyCharacterPosition1;
+    public Transform enemyCharacterPosition2;
+    public Transform enemyCharacterPosition3;
+    public Transform enemyCharacterPosition4;
 
     [Header("Interactable Areas")]
     public List<Image> interactableAreas;
     public Dictionary<Image, CardData> interactableAreaToCardData = new Dictionary<Image, CardData>();
+
+    private GameManager gameManagerRef;
+    public GameHost gameHost;
 
     //private void Awake()
     //{
@@ -71,6 +88,11 @@ public class CardManager : MonoBehaviour
 
     void Start()
     {
+        
+    }
+
+    public async void StartGame()
+    {
         CacheAllCards();
         CacheSelectedCardIDs();
         MapCharacterVfx();
@@ -80,6 +102,21 @@ public class CardManager : MonoBehaviour
 
         InitializeCardBack();
         PlaceCharactersOnStage();
+        PlaceOpponentCharactersOnStage();
+
+        // Draw 5 cards at the start (hardcoded)
+        for (int i = 0; i < 5; i++)
+        {
+            await Task.Delay(600);
+            if (!canDraw)
+            {
+                i = i - 1;
+            }
+            else
+            {
+                DrawCard(false);
+            }
+        }
     }
 
     #region Cache Data from Scriptable Objects
@@ -174,6 +211,10 @@ public class CardManager : MonoBehaviour
             case 1: return characterPosition2;
             case 2: return characterPosition3;
             case 3: return characterPosition4;
+            case 4: return enemyCharacterPosition1;
+            case 5: return enemyCharacterPosition2;
+            case 6: return enemyCharacterPosition3;
+            case 7: return enemyCharacterPosition4;
             default: return null;
         }
     }
@@ -226,6 +267,49 @@ public class CardManager : MonoBehaviour
             }
         }
     }
+
+    private void PlaceOpponentCharactersOnStage()
+    {
+        if (opponentCharacterIDs.Count < 4)
+        {
+            Debug.LogWarning("Not enough opponent characters selected to place on stage.");
+            return;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            string characterID = opponentCharacterIDs[i];
+
+            if (charactersDictionary.TryGetValue(characterID, out CardData characterData))
+            {
+                GameObject characterCard = Instantiate(characterCardPrefab, opponentDeckPosition.position, Quaternion.identity);
+
+                CharacterCard characterCardScript = characterCard.GetComponent<CharacterCard>();
+                if (characterCardScript != null)
+                {
+                    characterCardScript.SetCardData(characterData);
+                }
+
+                Transform targetPosition = GetCharacterPosition(i + 4);
+
+                characterCard.transform.DOMove(targetPosition.position, drawAnimDuration)
+                    .SetEase(Ease.InOutSine)
+                    .OnComplete(() =>
+                    {
+                        canDraw = true;
+                    });
+
+                //if (i < interactableAreas.Count)
+                //{
+                //    interactableAreaToCardData[interactableAreas[i]] = characterData;
+                //}
+            }
+            else
+            {
+                Debug.LogWarning($"Character ID {characterID} not found in charactersDictionary!");
+            }
+        }
+    }
     #endregion
 
     #region Card Drawing
@@ -234,6 +318,8 @@ public class CardManager : MonoBehaviour
     {
         cardBackInstance = Instantiate(cardBackPrefab, deckPosition.position, Quaternion.identity);
         cardBackInstance.SetActive(false);
+        opponentCardBackInstance = Instantiate(cardBackPrefab, opponentDeckPosition.position, Quaternion.identity);
+        opponentCardBackInstance.SetActive(false);
     }
 
     public void DrawCard(bool isCharacterCard)
@@ -269,6 +355,12 @@ public class CardManager : MonoBehaviour
 
                 // Debug: Print remaining cards in the pool
                 //Debug.Log($"Cards remaining in pool: {currentPoolSize}");
+
+                // Synchronize the card animation with the opponent
+                if (gameManagerRef != null & gameManagerRef.IsOwner)
+                {
+                    gameManagerRef.DrawCardServerRpc();
+                }
             }
             else
             {
@@ -298,7 +390,7 @@ public class CardManager : MonoBehaviour
 
         // Control point now considers the height (Y-axis) of offScreenPosition
         Vector3 controlPoint = new Vector3(
-            startPosition.x - 2f, // Adjust X for a nice curve
+            startPosition.x + 2f, // Adjust X for a nice curve
             (startPosition.y + endPosition.y) / 2, // Adjust Y for height transition
             (startPosition.z + endPosition.z) / 2  // Z midpoint
         );
@@ -311,6 +403,42 @@ public class CardManager : MonoBehaviour
                 // Display the card on the canvas
                 DisplayCardOnCanvas(cardData);
                 cardBackInstance.SetActive(false);
+            });
+    }
+
+    public void OpponentAnimateDrawCard()
+    {
+        // If this is the last card, disable the deck visuals
+        // but we don't do this first
+        //if (isLastCard)
+        //{
+        //    cardDeckMesh.SetActive(false);
+        //    deckButton.interactable = false;
+        //}
+
+        Debug.Log("Animation Created Successfully");
+        opponentCardBackInstance.transform.position = opponentDeckPosition.position;
+        opponentCardBackInstance.SetActive(true);
+
+        Vector3 startPosition = opponentDeckPosition.position;
+        Vector3 endPosition = opponentOffScreenPosition.position;
+        Vector3 controlPoint = new Vector3(
+            startPosition.x - 2f, // Adjust X for a nice curve
+            (startPosition.y + endPosition.y) / 2, // Adjust Y for height transition
+            (startPosition.z + endPosition.z) / 2  // Z midpoint);
+        );
+
+        // Animate the cardBackPrefab
+        opponentCardBackInstance.transform.DOPath(new Vector3[] { startPosition, controlPoint, endPosition }, drawAnimDuration, PathType.CatmullRom)
+            .SetEase(Ease.InOutSine)
+            .OnComplete(() =>
+            {
+                opponentCardBackInstance.SetActive(false);
+                // Display the card back on the canvas
+                if(actionCardsDictionary.TryGetValue("e00", out CardData cardData))
+                {
+                    AddCardToEnemyHand(cardData);
+                }
             });
     }
 
@@ -336,6 +464,36 @@ public class CardManager : MonoBehaviour
         }
 
         canDraw = true;
+    }
+
+    private void AddCardToEnemyHand(CardData cardData)
+    {
+        GameObject uiCard = Instantiate(uiCardPrefab, enemyHandArea);
+
+        HandCard handCard = uiCard.GetComponent<HandCard>();
+        if (handCard != null)
+        {
+            handCard.SetCardData(cardData);
+        }
+
+        CustomHandLayout handLayout = enemyHandArea.GetComponent<CustomHandLayout>();
+        if (handLayout != null)
+        {
+            handLayout.AddCard(uiCard.GetComponent<RectTransform>());
+        }
+    }
+    #endregion
+
+    #region Network
+    public void LinkNetworkGameManager(GameManager gameManager)
+    {
+        gameManagerRef = gameManager;
+    }
+    
+    [Rpc(SendTo.Server, RequireOwnership = false)]
+    public void RequestDrawCardToServerRpc(ulong clientID)
+    {
+        GameHost.Instance.RequestDrawCardServerRpc(clientID);
     }
     #endregion
 }

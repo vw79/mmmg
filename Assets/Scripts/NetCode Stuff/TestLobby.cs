@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
@@ -13,12 +14,14 @@ public class TestLobby : MonoBehaviour
 {
     private Lobby hostLobby;
     private Lobby joinedLobby;
+    private bool isGameStarted = false;
     private float pingTimer = 15f;
     private float lobbyUpdateTimer = 1.5f;
     private string playerName;
 
     public LobbyUI lobbyUI;
     public string gameSceneName;
+    public SceneTransition transitionTool;
 
     public static TestLobby Instance;
 
@@ -27,9 +30,21 @@ public class TestLobby : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        //NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+    }
+
     // Similar to Login Function
     public async void Authenticate(TMP_InputField textBox)
     {
+        // Validate if the player name is empty
+        if (string.IsNullOrEmpty(textBox.text))
+        {
+            Debug.Log("Player name cannot be empty");
+            return;
+        }
+
         string playerName = textBox.text;
         this.playerName = playerName;
         InitializationOptions options = new InitializationOptions();
@@ -45,7 +60,7 @@ public class TestLobby : MonoBehaviour
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
 
         lobbyUI.ShowLobbyPanel();
-        RefreshLobbyList();
+        //RefreshLobbyList();
     }
 
     private void Update()
@@ -72,7 +87,7 @@ public class TestLobby : MonoBehaviour
         if (joinedLobby != null)
         {
             lobbyUpdateTimer -= Time.deltaTime;
-            if (lobbyUpdateTimer <= 0)
+            if (lobbyUpdateTimer <= 0 & !isGameStarted)
             {
                 lobbyUpdateTimer = 1.5f;
                 Lobby lobby = await LobbyService.Instance.GetLobbyAsync(joinedLobby.Id);
@@ -85,6 +100,7 @@ public class TestLobby : MonoBehaviour
                     if(!IsHost())
                     {
                         RelaySystem.Instance.JoinRelay(joinedLobby.Data["GameKey"].Value);
+                        isGameStarted = true;
                     }
                 }
             }
@@ -111,7 +127,7 @@ public class TestLobby : MonoBehaviour
             hostLobby = lobby;
             joinedLobby = lobby;
 
-            lobbyUI.ShowRoomPanel();
+            lobbyUI.ShowRoomPanel(lobby.Name);
         }
         catch (LobbyServiceException e)
         {
@@ -119,7 +135,7 @@ public class TestLobby : MonoBehaviour
         }
     }
 
-    private async void RefreshLobbyList()
+    public async void RefreshLobbyList()
     {
         try
         {
@@ -155,7 +171,7 @@ public class TestLobby : MonoBehaviour
             joinedLobby = lobby;
 
             PrintPlayers(lobby);
-            lobbyUI.ShowRoomPanel();
+            lobbyUI.ShowRoomPanel(lobby.Name);
         }
         catch (LobbyServiceException e)
         {
@@ -175,7 +191,7 @@ public class TestLobby : MonoBehaviour
             joinedLobby = lobby;
 
             PrintPlayers(lobby);
-            lobbyUI.ShowRoomPanel();
+            lobbyUI.ShowRoomPanel(lobby.Name);
         }
         catch (LobbyServiceException e)
         {
@@ -225,7 +241,9 @@ public class TestLobby : MonoBehaviour
 
                 joinedLobby = lobby;
 
-                SceneManager.LoadSceneAsync(gameSceneName, LoadSceneMode.Single);
+                Debug.Log("Move to Battle Scene");
+                transitionTool.TransitionToScene(4);
+                //SceneManager.LoadSceneAsync(gameSceneName, LoadSceneMode.Single);
             }
             catch (LobbyServiceException e)
             {
@@ -233,4 +251,22 @@ public class TestLobby : MonoBehaviour
             }
         }
     }
+
+    // Netcode: While Player Joined, Call this function
+    private void OnClientConnected(ulong clientID)
+    {
+        if (!NetworkManager.Singleton.IsServer) return;
+        if (NetworkManager.Singleton.ConnectedClientsList.Count == 2)
+        {
+            transitionTool.TransitionToScene(4);
+            return;
+        }
+    }
+
+    //[Rpc(SendTo.ClientsAndHost)]
+    //public void MoveToBattleSceneRpc()
+    //{
+    //    Debug.Log("Moved to Battle Scene");
+    //    transitionTool.TransitionToScene(4);
+    //}
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class LobbyUI : MonoBehaviour
     public GameObject lobbyPanel;
     public GameObject lobbyListPanel;
     public GameObject roomPanel;
+    public TextMeshProUGUI roomName;
     public GameObject room_PlayerListPanel;
     public Button startGameButton;
 
@@ -31,8 +33,9 @@ public class LobbyUI : MonoBehaviour
         roomPanel.SetActive(false);
     }
 
-    public void ShowRoomPanel()
+    public void ShowRoomPanel(string lobbyRoomName)
     {
+        roomName.text = lobbyRoomName;
         loginPanel.SetActive(false);
         lobbyPanel.SetActive(false);
         roomPanel.SetActive(true);

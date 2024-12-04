@@ -2,60 +2,177 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Ron.Utility;
+using Unity.Netcode;
+using Unity.Collections;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
-    [ReadOnly] public int currentRound = 1;
-    [ReadOnly] public TurnState gameState = TurnState.PlayerOneTurn;
-    public PlayerTest[] players = new PlayerTest[2];
+    public CardManager cardManager;
 
-    private void Start()
-    {
-        StartGame();
-    }
+    public SelectedCardData selectedCards; 
 
-    private void Update()
+    public NetworkVariable<CharacterCardData> characterCardData = new NetworkVariable<CharacterCardData>(new CharacterCardData(), NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+    public struct CharacterCardData : INetworkSerializable
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        public FixedString32Bytes character1ID;
+        public FixedString32Bytes character2ID;
+        public FixedString32Bytes character3ID;
+        public FixedString32Bytes character4ID;
+
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
-            SwitchTurn();
+            serializer.SerializeValue(ref character1ID);
+            serializer.SerializeValue(ref character2ID);
+            serializer.SerializeValue(ref character3ID);
+            serializer.SerializeValue(ref character4ID);
         }
     }
 
-    public void StartGame()
+    public override void OnNetworkSpawn()
     {
-        // Basically restart everything here. Anything you can think of.
-        currentRound = 1;
-        gameState = TurnState.PlayerOneTurn;
-        Debug.Log("Game Start.");
-
-        // Initialize every players.
-        foreach(PlayerTest player in players)
+        if (!IsOwner) return;
+        if (cardManager == null)
         {
-            player.currentHealth = player.initialHealth;
-            player.canMove = false;
+            cardManager = FindObjectOfType<CardManager>();
         }
 
-        // Randomly choose who goes first.
-        int random = Random.Range(0, 2);
-        players[random].playerOrder = PlayerOrder.First;
-        players[(random + 1) % 2].playerOrder = PlayerOrder.Second;
+        cardManager.LinkNetworkGameManager(this);
     }
 
-    public void SwitchTurn()
+    [Rpc(SendTo.Owner)]
+    public void UploadCardRpc()
     {
-        if(gameState == TurnState.PlayerOneTurn)
+        if (cardManager == null)
         {
-            gameState = TurnState.PlayerTwoTurn;
-            Debug.Log("Player Two Turn");
+            cardManager = FindObjectOfType<CardManager>();
+        }
+
+        selectedCards = cardManager.selectedCards;
+        List<string> characters = selectedCards.selectedCharacterIDs;
+
+        Debug.Log(NetworkManager.Singleton.LocalClientId + " " + characters[0] + " " + characters[1] + " " + characters[2] + " " + characters[3]);
+
+        characterCardData.Value = new CharacterCardData
+        {
+            character1ID = characters[0],
+            character2ID = characters[1],
+            character3ID = characters[2],
+            character4ID = characters[3]
+        };
+
+        Debug.Log(NetworkManager.Singleton.LocalClientId + " " + characterCardData.Value.character1ID + " " + characterCardData.Value.character2ID + " " + characterCardData.Value.character3ID + " " + characterCardData.Value.character4ID);
+    }
+
+    [Rpc(SendTo.Owner)]
+    public void GetEnemyCharactersRpc(CharacterCardData characters)
+    {
+        Debug.Log(characters.character1ID + " " + characters.character2ID + " " + characters.character3ID + " " + characters.character4ID);
+        cardManager.opponentCharacterIDs = new List<string>
+        {
+            characters.character1ID.ToString(),
+            characters.character2ID.ToString(),
+            characters.character3ID.ToString(),
+            characters.character4ID.ToString()
+        };
+
+        Debug.Log(cardManager.opponentCharacterIDs[0]);
+    }
+
+    [Rpc(SendTo.Owner)]
+    public void StartGameRpc()
+    {
+        if(cardManager == null)
+        {
+            cardManager = FindObjectOfType<CardManager>();
+        }
+        cardManager.StartGame();
+    }
+
+
+    #region Server Draw Card Animation
+    [Rpc(SendTo.Server, RequireOwnership = false)]
+    public void DrawCardServerRpc()
+    {
+        Debug.Log("Card drawn, sender: " + OwnerClientId);
+
+        GameHost.Instance.RequestDrawCardServerRpc(OwnerClientId);
+    }
+
+    [ClientRpc]
+    public void AnimateDrawClientRpc(ulong drawerClientId)
+    {
+        if (NetworkManager.Singleton.LocalClientId != drawerClientId)
+        {
+            Debug.Log("Pass, " + IsOwner + " " + NetworkManager.Singleton.LocalClientId + " " + drawerClientId + " " + OwnerClientId);
+            // Play draw animation for the other player
+            PlayOpponentDrawAnimation();
         }
         else
         {
-            gameState = TurnState.PlayerOneTurn;
-            currentRound++;
-            Debug.Log("Round " + currentRound + ", Player One Turn");
+            Debug.Log("Fail, " + IsOwner + " " + NetworkManager.Singleton.LocalClientId + " " + drawerClientId + " " + OwnerClientId);
         }
     }
+
+    private void PlayOpponentDrawAnimation()
+    {
+        Debug.Log("Animating Opponent Draw Card");
+        if (!IsOwner) return;
+        cardManager.OpponentAnimateDrawCard();
+    }
+    #endregion
+
+    //[ReadOnly] public int currentRound = 1;
+    //[ReadOnly] public TurnState gameState = TurnState.PlayerOneTurn;
+    //public PlayerTest[] players = new PlayerTest[2];
+
+    //private void Start()
+    //{
+    //    StartGame();
+    //}
+
+    //private void Update()
+    //{
+    //    if(Input.GetKeyDown(KeyCode.Space))
+    //    {
+    //        SwitchTurn();
+    //    }
+    //}
+
+    //public void StartGame()
+    //{
+    //    // Basically restart everything here. Anything you can think of.
+    //    currentRound = 1;
+    //    gameState = TurnState.PlayerOneTurn;
+    //    Debug.Log("Game Start.");
+
+    //    // Initialize every players.
+    //    foreach(PlayerTest player in players)
+    //    {
+    //        player.currentHealth = player.initialHealth;
+    //        player.canMove = false;
+    //    }
+
+    //    // Randomly choose who goes first.
+    //    int random = Random.Range(0, 2);
+    //    players[random].playerOrder = PlayerOrder.First;
+    //    players[(random + 1) % 2].playerOrder = PlayerOrder.Second;
+    //}
+
+    //public void SwitchTurn()
+    //{
+    //    if(gameState == TurnState.PlayerOneTurn)
+    //    {
+    //        gameState = TurnState.PlayerTwoTurn;
+    //        Debug.Log("Player Two Turn");
+    //    }
+    //    else
+    //    {
+    //        gameState = TurnState.PlayerOneTurn;
+    //        currentRound++;
+    //        Debug.Log("Round " + currentRound + ", Player One Turn");
+    //    }
+    //}
 
 }
 
