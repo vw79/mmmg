@@ -24,7 +24,7 @@ public class Scoreboard : MonoBehaviour
 
     private void OnClientDisconnect(ulong clientId)
     {
-        Debug.Log("Disconnected from server");
+        ShowWinPanel();
     }
 
     public void UpdateScore(int selfScore, int opponentScore)
@@ -65,7 +65,7 @@ public class Scoreboard : MonoBehaviour
         });
     }
 
-    private void DelayAndQuitToMainMenu()
+    public void DelayAndQuitToMainMenu()
     {
         AuthenticationService.Instance.SignOut();
         NetworkManager.Singleton.Shutdown();
