@@ -66,6 +66,10 @@ public class CardManager : MonoBehaviour
     public List<Image> interactableAreas;
     public Dictionary<Image, CardData> interactableAreaToCardData = new Dictionary<Image, CardData>();
 
+    [Header("Character Card Data Handle")]
+    public List<CharacterCard> selfCharacterCardData;
+    public List<CharacterCard> opponentCharacterCardData;
+
     private GameManager gameManagerRef;
     public GameHost gameHost;
 
@@ -245,6 +249,7 @@ public class CardManager : MonoBehaviour
                 if (characterCardScript != null)
                 {
                     characterCardScript.SetCardData(characterData);
+                    selfCharacterCardData.Add(characterCardScript);
                 }
 
                 Transform targetPosition = GetCharacterPosition(i);
@@ -288,6 +293,7 @@ public class CardManager : MonoBehaviour
                 if (characterCardScript != null)
                 {
                     characterCardScript.SetCardData(characterData);
+                    opponentCharacterCardData.Add(characterCardScript);
                 }
 
                 Transform targetPosition = GetCharacterPosition(i + 4);
@@ -390,7 +396,7 @@ public class CardManager : MonoBehaviour
 
         // Control point now considers the height (Y-axis) of offScreenPosition
         Vector3 controlPoint = new Vector3(
-            startPosition.x + 2f, // Adjust X for a nice curve
+            startPosition.x - 2f, // Adjust X for a nice curve
             (startPosition.y + endPosition.y) / 2, // Adjust Y for height transition
             (startPosition.z + endPosition.z) / 2  // Z midpoint
         );
@@ -423,7 +429,7 @@ public class CardManager : MonoBehaviour
         Vector3 startPosition = opponentDeckPosition.position;
         Vector3 endPosition = opponentOffScreenPosition.position;
         Vector3 controlPoint = new Vector3(
-            startPosition.x - 2f, // Adjust X for a nice curve
+            startPosition.x + 2f, // Adjust X for a nice curve
             (startPosition.y + endPosition.y) / 2, // Adjust Y for height transition
             (startPosition.z + endPosition.z) / 2  // Z midpoint);
         );
@@ -482,6 +488,58 @@ public class CardManager : MonoBehaviour
             handLayout.AddCard(uiCard.GetComponent<RectTransform>());
         }
     }
+    #endregion
+
+    #region Animate Opponent Use Card
+    public void AnimateOpponentUseCard(string cardID, int charIndex)
+    {
+        GameObject uiCard = Instantiate(uiCardPrefab, enemyHandArea);
+        uiCard.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+        HandCard handCard = uiCard.GetComponent<HandCard>();
+        if (handCard != null)
+        {
+            if (actionCardsDictionary.TryGetValue(cardID, out CardData cardData))
+            {
+                handCard.SetCardData(cardData);
+            }
+            else
+            {
+                Debug.LogWarning($"Card ID {cardID} not found in actionCardsDictionary!");
+            }
+        }
+
+        CustomHandLayout handLayout = enemyHandArea.GetComponent<CustomHandLayout>();
+        RectTransform currentCard = handLayout.cards[0];
+        if (handLayout != null)
+        {
+            handLayout.RemoveCard(currentCard);
+            Destroy(currentCard.gameObject);
+        }
+
+        // Animate the card
+        uiCard.transform.DOMove(CardUseManager.Instance.opponentInteractableAreas[charIndex].rectTransform.position, 1f)
+            .SetEase(Ease.InOutSine)
+            .OnComplete(() =>
+            {
+                Destroy(uiCard);
+            });
+    }
+    #endregion
+
+    #region Character Attack
+
+    // Function for attacker attacks target
+    public void OnOpponentCharacterGetHit(int charIndex, int damage)
+    {
+        opponentCharacterCardData[charIndex].TakeDamage(damage);
+    }
+
+    // Function for target get hit
+    public void OnSelfCharacterGetHit(int charIndex, int damage)
+    {
+        selfCharacterCardData[charIndex].TakeDamage(damage);
+    }
+
     #endregion
 
     #region Network

@@ -76,4 +76,21 @@ public class GameHost : MonoBehaviour
         // Find opponent game manager
         gameManagers.Find(x => x.OwnerClientId != clientID).AnimateDrawClientRpc(clientID);
     }
+
+    [Rpc(SendTo.Server,RequireOwnership = false)]
+    public void RequestUseCardServerRpc(ulong clientID, string cardID, int charIndex)
+    {
+        gameManagers.Find(x => x.OwnerClientId != clientID).OpponentUseCardClientRpc(cardID, charIndex);
+    }
+
+    [Rpc(SendTo.Server,RequireOwnership = false)]
+    public void RequestCharacterHitServerRpc(ulong clientID, int charIndex, int damage)
+    {
+        GameManager attacker = gameManagers.Find(x => x.OwnerClientId == clientID);
+        GameManager target = gameManagers.Find(x => x.OwnerClientId != clientID);
+
+        attacker.CharacterAttackClientRpc(charIndex, damage);
+        target.CharacterHitClientRpc(charIndex, damage);
+
+    }
 }

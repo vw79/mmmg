@@ -7,13 +7,17 @@ using DG.Tweening;
 public class CardUseManager : MonoBehaviour
 {
     private Image currentHoveredArea;
+    private int currentHoveredAreaIndex;
 
     [Header("Interactable Areas")]
-    public Image[] interactableAreas;
+    public Image[] selfInteractableAreas;
+    public GameObject selectEnemyPanel;
+    public Image[] opponentInteractableAreas;
 
     private Color originalColor;
     private float originalAlpha;
 
+    private GameManager gameManagerRef;
     public static CardUseManager Instance { get; private set; }
 
     private void Awake()
@@ -30,13 +34,21 @@ public class CardUseManager : MonoBehaviour
 
     private void Start()
     {
-        if (interactableAreas.Length > 0 && interactableAreas[0] != null)
+        if (selfInteractableAreas.Length > 0 && selfInteractableAreas[0] != null)
         {
-            originalColor = interactableAreas[0].color;
+            originalColor = selfInteractableAreas[0].color;
             originalAlpha = originalColor.a;
         }
 
-        foreach (var area in interactableAreas)
+        foreach (var area in selfInteractableAreas)
+        {
+            if (area != null)
+            {
+                area.gameObject.SetActive(false);
+            }
+        }
+
+        foreach (var area in opponentInteractableAreas)
         {
             if (area != null)
             {
@@ -47,9 +59,9 @@ public class CardUseManager : MonoBehaviour
 
     #region Show/Hide Interactable Areas
 
-    public void ShowInteractableAreas()
+    public void ShowSelfInteractableAreas()
     {
-        foreach (var area in interactableAreas)
+        foreach (var area in selfInteractableAreas)
         {
             if (area != null)
             {
@@ -61,7 +73,20 @@ public class CardUseManager : MonoBehaviour
         }
     }
 
-    public void HideInteractableAreas()
+    public void ShowOpponentInteractableAreas()
+    {
+        selectEnemyPanel.SetActive(true);
+        foreach(var area in opponentInteractableAreas)
+        {
+            if (area != null)
+            {
+                area.gameObject.SetActive(true);
+                area.transform.localScale = Vector3.one; // Reset scale
+            }
+        }
+    }
+
+    public void HideSelfInteractableAreas()
     {
         if (currentHoveredArea != null)
         {
@@ -69,7 +94,7 @@ public class CardUseManager : MonoBehaviour
             currentHoveredArea = null;
         }
 
-        foreach (var area in interactableAreas)
+        foreach (var area in selfInteractableAreas)
         {
             if (area != null)
             {
@@ -89,7 +114,7 @@ public class CardUseManager : MonoBehaviour
             currentHoveredArea = null;
         }
 
-        foreach (var area in interactableAreas)
+        foreach (var area in selfInteractableAreas)
         {
             if (area != null && area != areaToExclude)
             {
@@ -105,7 +130,7 @@ public class CardUseManager : MonoBehaviour
 
     #region Interaction Handlers
 
-    public void SetHoveredArea(Image area)
+    public void SetHoveredArea(Image area, int index)
     {
         if (currentHoveredArea != area)
         {
@@ -117,6 +142,7 @@ public class CardUseManager : MonoBehaviour
 
             // Update to the new hovered area
             currentHoveredArea = area;
+            currentHoveredAreaIndex = index;
             if (currentHoveredArea != null)
             {
                 SetAreaHoverColor(currentHoveredArea);
@@ -135,6 +161,7 @@ public class CardUseManager : MonoBehaviour
             }
 
             currentHoveredArea = null;
+            currentHoveredAreaIndex = -1;
         }
     }
 
@@ -188,6 +215,9 @@ public class CardUseManager : MonoBehaviour
 
         // Destroy the card
         Destroy(card);
+
+        // Show opponent's interactable areas to choose one opponent's character
+        ShowOpponentInteractableAreas();
     }
 
     private void AnimateUsedArea(Image area)
@@ -206,6 +236,26 @@ public class CardUseManager : MonoBehaviour
                 });
             });
         }
+    }
+
+    public void OpponentCharacterOnSelected(int selectedCharacterIndex)
+    {
+        Debug.Log($"Selected opponent character: {selectedCharacterIndex}");
+
+        // Hide opponent's interactable areas
+        foreach (var area in opponentInteractableAreas)
+        {
+            if (area != null)
+            {
+                area.gameObject.SetActive(false);
+            }
+        }
+
+        selectEnemyPanel.SetActive(false);
+
+        // Netcode: Broadcast the selected character index to all clients
+        // Example: Send selectedCharacterIndex
+        SynchronizeOpponentCharacterHit(selectedCharacterIndex);
     }
 
     #endregion
@@ -272,7 +322,7 @@ public class CardUseManager : MonoBehaviour
             CustomHandLayout handLayout = handCardInteraction.GetComponentInParent<CustomHandLayout>();
             if (handLayout != null)
             {
-                HideInteractableAreas();
+                HideSelfInteractableAreas();
                 RectTransform cardRectTransform = card.GetComponent<RectTransform>();
                 handLayout.AddCard(cardRectTransform);
             }
@@ -292,10 +342,21 @@ public class CardUseManager : MonoBehaviour
     #region Netcode
     // Netcode methods (if any)
 
+    public void LinkNetworkGameManager(GameManager gameManager)
+    {
+        gameManagerRef = gameManager;
+    }
+
     private void SynchronizeCardUsage(GameObject card, CardData usedCardData, CardData hoveredCardData)
     {
         // Netcode: Broadcast card usage event to all clients
         // Example: Send cardID and hoveredAreaID
+        gameManagerRef.UseCardServerRpc(usedCardData.cardID, currentHoveredAreaIndex);
+    }
+
+    private void SynchronizeOpponentCharacterHit(int charIndex)
+    {
+        gameManagerRef.CharacterHitServerRpc(charIndex, 1);
     }
 
     private void SynchronizeCardReturn(GameObject card)

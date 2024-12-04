@@ -101,7 +101,7 @@ public class HandCardInteraction : MonoBehaviour, IPointerDownHandler, IPointerU
 
         if (cardUseManager != null)
         {
-            cardUseManager.HideInteractableAreas();
+            cardUseManager.HideSelfInteractableAreas();
             cardUseManager.ClearHoveredArea(null);
         }
 
@@ -124,7 +124,7 @@ public class HandCardInteraction : MonoBehaviour, IPointerDownHandler, IPointerU
 
             if (cardUseManager != null)
             {
-                cardUseManager.ShowInteractableAreas();
+                cardUseManager.ShowSelfInteractableAreas();
             }
         }
 
@@ -135,7 +135,7 @@ public class HandCardInteraction : MonoBehaviour, IPointerDownHandler, IPointerU
 
             if (cardUseManager != null)
             {
-                cardUseManager.ShowInteractableAreas();
+                cardUseManager.ShowSelfInteractableAreas();
             }
         }
 
@@ -212,7 +212,7 @@ public class HandCardInteraction : MonoBehaviour, IPointerDownHandler, IPointerU
 
         if (cardUseManager != null)
         {
-            foreach (var area in cardUseManager.interactableAreas)
+            foreach (var area in cardUseManager.selfInteractableAreas)
             {
                 cachedAreaRects.Add(GetWorldRect(area.rectTransform));
             }
@@ -227,7 +227,7 @@ public class HandCardInteraction : MonoBehaviour, IPointerDownHandler, IPointerU
         {
             if (cardRect.Overlaps(cachedAreaRects[i], true))
             {
-                cardUseManager.SetHoveredArea(cardUseManager.interactableAreas[i]);
+                cardUseManager.SetHoveredArea(cardUseManager.selfInteractableAreas[i], i);
                 return; // Only handle one area at a time
             }
         }

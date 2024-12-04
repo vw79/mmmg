@@ -31,6 +31,7 @@ public class CharacterCard : MonoBehaviour
     public GameObject healthBar;
     public GameObject healthPrefab;
     public int maxHealth;
+    private int currentHealth;
 
     public List<Sprite> skillIcons;
     private CardData cardData;
@@ -43,6 +44,7 @@ public class CharacterCard : MonoBehaviour
         {
             // Assign maxHealth to cardData.health
             maxHealth = cardData.health;
+            currentHealth = cardData.health;
 
             // Set card name and image
             cardNameText.text = cardData.cardName;
@@ -122,4 +124,26 @@ public class CharacterCard : MonoBehaviour
             default: return -1; // Invalid color
         }
     }
+
+    #region On Battle Actions
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        UpdateHealthBar();
+    }
+
+    private void UpdateHealthBar()
+    {
+        // Destroy all health units
+        foreach (Transform child in healthBar.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // Populate health bar with currentHealth
+        PopulateHealthBar(currentHealth);
+    }
+
+    #endregion
 }

@@ -8,6 +8,7 @@ using Unity.Collections;
 public class GameManager : NetworkBehaviour
 {
     public CardManager cardManager;
+    public CardUseManager cardUseManager;
 
     public SelectedCardData selectedCards; 
 
@@ -37,7 +38,13 @@ public class GameManager : NetworkBehaviour
             cardManager = FindObjectOfType<CardManager>();
         }
 
+        if (cardUseManager == null)
+        {
+            cardUseManager = FindObjectOfType<CardUseManager>();
+        }
+
         cardManager.LinkNetworkGameManager(this);
+        cardUseManager.LinkNetworkGameManager(this);
     }
 
     [Rpc(SendTo.Owner)]
@@ -104,13 +111,8 @@ public class GameManager : NetworkBehaviour
     {
         if (NetworkManager.Singleton.LocalClientId != drawerClientId)
         {
-            Debug.Log("Pass, " + IsOwner + " " + NetworkManager.Singleton.LocalClientId + " " + drawerClientId + " " + OwnerClientId);
             // Play draw animation for the other player
             PlayOpponentDrawAnimation();
-        }
-        else
-        {
-            Debug.Log("Fail, " + IsOwner + " " + NetworkManager.Singleton.LocalClientId + " " + drawerClientId + " " + OwnerClientId);
         }
     }
 
@@ -119,6 +121,45 @@ public class GameManager : NetworkBehaviour
         Debug.Log("Animating Opponent Draw Card");
         if (!IsOwner) return;
         cardManager.OpponentAnimateDrawCard();
+    }
+    #endregion
+
+    #region Server Card Use Animation
+    [Rpc(SendTo.Server, RequireOwnership = false)]
+    public void UseCardServerRpc(string cardID, int charIndex)
+    {
+        GameHost.Instance.RequestUseCardServerRpc(OwnerClientId, cardID, charIndex);
+    }
+
+    [ClientRpc]
+    public void OpponentUseCardClientRpc(string cardID, int charIndex)
+    {
+        if (!IsOwner) return;
+        cardManager.AnimateOpponentUseCard(cardID, charIndex);
+    }
+    #endregion
+
+    #region Server Character Hit
+    [Rpc(SendTo.Server, RequireOwnership = false)]
+    public void CharacterHitServerRpc(int charIndex, int damage)
+    {
+        GameHost.Instance.RequestCharacterHitServerRpc(OwnerClientId, charIndex, damage);
+    }
+
+    // ClientRpc for target
+    [ClientRpc]
+    public void CharacterHitClientRpc(int charIndex, int damage)
+    {
+        if (!IsOwner) return;
+        cardManager.OnSelfCharacterGetHit(charIndex, damage);
+    }
+
+    // ClientRpc for attacker
+    [ClientRpc]
+    public void CharacterAttackClientRpc(int charIndex, int damage)
+    {
+        if (!IsOwner) return;
+        cardManager.OnOpponentCharacterGetHit(charIndex, damage);
     }
     #endregion
 
