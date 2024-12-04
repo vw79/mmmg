@@ -532,6 +532,11 @@ public class CardManager : MonoBehaviour
     public void OnOpponentCharacterGetHit(int charIndex, int damage)
     {
         opponentCharacterCardData[charIndex].TakeDamage(damage);
+        if (opponentCharacterCardData[charIndex].GetHealth() <= 0)
+        {
+            // Callback to server
+            gameManagerRef.AddScoreServerRpc();
+        }
     }
 
     // Function for target get hit

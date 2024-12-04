@@ -9,8 +9,10 @@ public class GameManager : NetworkBehaviour
 {
     public CardManager cardManager;
     public CardUseManager cardUseManager;
+    public Scoreboard scoreboard;
 
-    public SelectedCardData selectedCards; 
+    public SelectedCardData selectedCards;
+    public NetworkVariable<int> Score = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
     public NetworkVariable<CharacterCardData> characterCardData = new NetworkVariable<CharacterCardData>(new CharacterCardData(), NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
@@ -30,6 +32,8 @@ public class GameManager : NetworkBehaviour
         }
     }
 
+    #region Start Game Functions
+
     public override void OnNetworkSpawn()
     {
         if (!IsOwner) return;
@@ -43,8 +47,15 @@ public class GameManager : NetworkBehaviour
             cardUseManager = FindObjectOfType<CardUseManager>();
         }
 
+        if (scoreboard == null)
+        {
+            scoreboard = FindObjectOfType<Scoreboard>();
+        }
+
         cardManager.LinkNetworkGameManager(this);
         cardUseManager.LinkNetworkGameManager(this);
+
+        GetComponent<NetworkObject>().DestroyWithScene = true;
     }
 
     [Rpc(SendTo.Owner)]
@@ -95,7 +106,7 @@ public class GameManager : NetworkBehaviour
         }
         cardManager.StartGame();
     }
-
+    #endregion
 
     #region Server Draw Card Animation
     [Rpc(SendTo.Server, RequireOwnership = false)]
@@ -162,6 +173,56 @@ public class GameManager : NetworkBehaviour
         cardManager.OnOpponentCharacterGetHit(charIndex, damage);
     }
     #endregion
+
+    #region Score Condition
+    [Rpc(SendTo.Server, RequireOwnership = false)]
+    public void AddScoreServerRpc()
+    {
+        GameHost.Instance.RequestAddScoreServerRpc(OwnerClientId);
+    }
+
+    [ClientRpc]
+    public void AddScoreClientRpc()
+    {
+        if (!IsOwner) return;
+        Debug.Log("Score added");
+    }
+
+    [ClientRpc]
+    public void UpdateScoreClientRpc(int selfScore, int opponentScore)
+    {
+        if (!IsOwner) return;
+        scoreboard.UpdateScore(selfScore, opponentScore);
+        if(selfScore >= 1)
+        {
+            scoreboard.ShowWinPanel();
+        }
+        else if(opponentScore >= 1)
+        {
+            scoreboard.ShowLosePanel();
+        }
+    }
+    #endregion
+
+    public bool ValidateSelfCharacterAlive(int charIndex)
+    {
+        int health = cardManager.selfCharacterCardData[charIndex].GetHealth();
+        if(health <= 0)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public bool ValidateOpponentCharacterAlive(int charIndex)
+    {
+        int health = cardManager.opponentCharacterCardData[charIndex].GetHealth();
+        if (health <= 0)
+        {
+            return false;
+        }
+        return true;
+    }
 
     //[ReadOnly] public int currentRound = 1;
     //[ReadOnly] public TurnState gameState = TurnState.PlayerOneTurn;

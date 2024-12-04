@@ -76,12 +76,20 @@ public class CardUseManager : MonoBehaviour
     public void ShowOpponentInteractableAreas()
     {
         selectEnemyPanel.SetActive(true);
-        foreach(var area in opponentInteractableAreas)
+        for (int i = 0; i < 4 ; i++)
         {
+            var area = opponentInteractableAreas[i];
             if (area != null)
             {
-                area.gameObject.SetActive(true);
-                area.transform.localScale = Vector3.one; // Reset scale
+                if (gameManagerRef.ValidateOpponentCharacterAlive(i))
+                {
+                    area.gameObject.SetActive(true);
+                    area.transform.localScale = Vector3.one; // Reset scale
+                }
+                else
+                {
+                    area.gameObject.SetActive(false);
+                }
             }
         }
     }
@@ -188,16 +196,19 @@ public class CardUseManager : MonoBehaviour
 
         CardData usedCardData = handCard.cardData;
 
-        // Validate card colors
-        if (ValidateCardColor(usedCardData, hoveredCardData))
+        // Validate if card is alive
+        if (gameManagerRef.ValidateSelfCharacterAlive(currentHoveredAreaIndex))
         {
-            HandleCardUsage(card, usedCardData, hoveredCardData);
+            // Validate card colors
+            if (ValidateCardColor(usedCardData, hoveredCardData))
+            {
+                HandleCardUsage(card, usedCardData, hoveredCardData);
+                return;
+            }
         }
-        else
-        {
-            Debug.Log($"Card '{usedCardData.cardName}' color does not match with '{hoveredCardData.cardName}'!");
-            ReturnCardToOriginalPosition(card);
-        }
+
+        Debug.Log($"Card '{usedCardData.cardName}' color does not match with '{hoveredCardData.cardName}' , or the character is dead!");
+        ReturnCardToOriginalPosition(card);
     }
 
     private void HandleCardUsage(GameObject card, CardData usedCardData, CardData hoveredCardData)

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class CharacterCard : MonoBehaviour
 {
@@ -131,6 +132,7 @@ public class CharacterCard : MonoBehaviour
     {
         currentHealth -= damage;
         UpdateHealthBar();
+        CheckDead();
     }
 
     private void UpdateHealthBar()
@@ -143,6 +145,20 @@ public class CharacterCard : MonoBehaviour
 
         // Populate health bar with currentHealth
         PopulateHealthBar(currentHealth);
+    }
+
+    public int GetHealth()
+    {
+        return currentHealth;
+    }
+
+    private void CheckDead()
+    {
+        if(currentHealth <= 0)
+        {
+            Debug.Log($"{cardData.cardName} is dead.");
+            transform.DOLocalMoveY(-2, 1f);
+        }
     }
 
     #endregion

@@ -93,4 +93,13 @@ public class GameHost : MonoBehaviour
         target.CharacterHitClientRpc(charIndex, damage);
 
     }
+
+    [Rpc(SendTo.Server,RequireOwnership = false)]
+    public void RequestAddScoreServerRpc(ulong clientID)
+    {
+        gameManagers.Find(x => x.OwnerClientId == clientID).Score.Value += 1;
+
+        gameManagers[0].UpdateScoreClientRpc(gameManagers[0].Score.Value, gameManagers[1].Score.Value);
+        gameManagers[1].UpdateScoreClientRpc(gameManagers[1].Score.Value, gameManagers[0].Score.Value);
+    }
 }
