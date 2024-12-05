@@ -219,11 +219,11 @@ public class GameManager : NetworkBehaviour
     {
         if (!IsOwner) return;
         scoreboard.UpdateScore(selfScore, opponentScore);
-        if(selfScore >= 1)
+        if(selfScore >= 4)
         {
             scoreboard.ShowWinPanel();
         }
-        else if(opponentScore >= 1)
+        else if(opponentScore >= 4)
         {
             scoreboard.ShowLosePanel();
         }

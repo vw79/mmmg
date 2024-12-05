@@ -74,6 +74,7 @@ public class CardManager : MonoBehaviour
     private GameManager gameManagerRef;
     public GameHost gameHost;
     public TurnIndicator turnIndicator;
+    public Button endTurnButton;
 
     // Turn-based variables
     public bool canUseCard = false;
@@ -363,6 +364,7 @@ public class CardManager : MonoBehaviour
     private void StartAction()
     {
         canUseCard = true;
+        endTurnButton.interactable = true;
     }
 
     public void DoAction(int AP)
@@ -375,13 +377,14 @@ public class CardManager : MonoBehaviour
     {
         if (actionPoint == 0)
         {
-            canUseCard = false;
             EndTurn();
         }
     }
 
-    private void EndTurn()
+    public void EndTurn()
     {
+        canUseCard = false;
+        endTurnButton.interactable = false;
         // End Turn Anim -> End Turn
         Sequence sequence = DOTween.Sequence();
         sequence.AppendCallback(() => turnIndicator.EndYourTurn())
