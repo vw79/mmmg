@@ -182,6 +182,13 @@ public class CardUseManager : MonoBehaviour
             return;
         }
 
+        if (CardManager.Instance.canUseCard == false)
+        {
+            Debug.Log("Cannot use card at the moment. Card returned.");
+            ReturnCardToOriginalPosition(card);
+            return;
+        }
+
         // Get CardData for the hovered area
         CardData hoveredCardData = GetCardDataForArea(currentHoveredArea);
 
@@ -267,6 +274,7 @@ public class CardUseManager : MonoBehaviour
         // Netcode: Broadcast the selected character index to all clients
         // Example: Send selectedCharacterIndex
         SynchronizeOpponentCharacterHit(selectedCharacterIndex);
+        CardManager.Instance.DoAction(1);
     }
 
     #endregion

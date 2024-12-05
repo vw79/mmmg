@@ -106,6 +106,32 @@ public class GameManager : NetworkBehaviour
         }
         cardManager.StartGame();
     }
+
+    [Rpc(SendTo.Server,RequireOwnership = false)]
+    public void ReadyToGameServerRpc()
+    {
+        GameHost.Instance.RequestStartGameServerRpc();
+    }
+
+    [ClientRpc]
+    public void StartTurnClientRpc()
+    {
+        if (!IsOwner) return;
+        cardManager.StartTurn();
+    }
+
+    [ClientRpc]
+    public void OpponentStartTurnClientRpc()
+    {
+        if (!IsOwner) return;
+        cardManager.OpponentStartTurn();
+    }
+
+    [Rpc(SendTo.Server, RequireOwnership = false)]
+    public void SendEndTurnRpc()
+    {
+        GameHost.Instance.RequestEndTurnServerRpc();
+    }
     #endregion
 
     #region Server Draw Card Animation

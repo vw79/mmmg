@@ -12,6 +12,12 @@ public class GameHost : MonoBehaviour
 
     public GameObject gameManagerPrefab;
     public List<GameManager> gameManagers;
+    public List<NewPlayerData> playerData = new List<NewPlayerData>();
+
+
+    public int currentTurn = 0;
+    public PlayerOrder gameState = PlayerOrder.Undefined;
+    public int playerReadyToStart = 0;
 
     private void Start()
     {
@@ -59,10 +65,76 @@ public class GameHost : MonoBehaviour
         gameManagers[0].GetEnemyCharactersRpc(gameManagers[1].characterCardData.Value);
         gameManagers[1].GetEnemyCharactersRpc(gameManagers[0].characterCardData.Value);
 
+        Debug.Log("Character Card Synced.");
+
         foreach (GameManager gameManager in gameManagers)
         {
-            gameManager.StartGameRpc();
+            playerData.Add(new NewPlayerData
+            {
+                clientId = gameManager.OwnerClientId,
+                gameManager = gameManager,
+                playOrder = PlayerOrder.Undefined
+            });
         }
+
+        Debug.Log("Doing other actions");
+        InitPlayOrder();
+        ClientsInitGame();
+    }
+
+    private void InitPlayOrder()
+    {
+        Debug.Log("Initializing Player Order");
+        int random = Random.Range(0, 2);
+        playerData[random].playOrder = PlayerOrder.First;
+        playerData[(random + 1) % 2].playOrder = PlayerOrder.Second;
+
+        currentTurn = 0;
+        gameState = PlayerOrder.First;
+    }
+
+    private void ClientsInitGame()
+    {
+        Debug.Log("All Clients Initialized Game.");
+        foreach(GameManager gm in gameManagers)
+        {
+            gm.StartGameRpc();
+        }
+    }
+
+    [Rpc(SendTo.Server,RequireOwnership = false)]
+    public void RequestStartGameServerRpc()
+    {
+        playerReadyToStart++;
+        if (playerReadyToStart == 2)
+        {
+            SwitchTurn();
+        }
+    }
+
+    private void SwitchTurn()
+    {
+        currentTurn++;
+        if (currentTurn % 2 == 1)
+        {
+            gameState = PlayerOrder.First;
+        }
+        else
+        {
+            gameState = PlayerOrder.Second;
+        }
+
+        GameManager playerOnTurn = playerData.Find(x => x.playOrder == gameState).gameManager;
+        GameManager playerNotOnTurn = playerData.Find(x => x.playOrder != gameState).gameManager;
+
+        playerOnTurn.StartTurnClientRpc();
+        playerNotOnTurn.OpponentStartTurnClientRpc();
+    }
+
+    [Rpc(SendTo.Server, RequireOwnership = false)]
+    public void RequestEndTurnServerRpc()
+    {
+        SwitchTurn();
     }
 
     [Rpc(SendTo.Server,RequireOwnership = false)]
@@ -102,4 +174,11 @@ public class GameHost : MonoBehaviour
         gameManagers[0].UpdateScoreClientRpc(gameManagers[0].Score.Value, gameManagers[1].Score.Value);
         gameManagers[1].UpdateScoreClientRpc(gameManagers[1].Score.Value, gameManagers[0].Score.Value);
     }
+}
+
+public class NewPlayerData
+{
+    public ulong clientId;
+    public GameManager gameManager;
+    public PlayerOrder playOrder;
 }

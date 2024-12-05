@@ -72,6 +72,11 @@ public class CardManager : MonoBehaviour
 
     private GameManager gameManagerRef;
     public GameHost gameHost;
+    public TurnIndicator turnIndicator;
+
+    // Turn-based variables
+    public bool canUseCard = false;
+    public int actionPoint = 0;
 
     //private void Awake()
     //{
@@ -95,7 +100,7 @@ public class CardManager : MonoBehaviour
         
     }
 
-    public async void StartGame()
+    public void StartGame()
     {
         CacheAllCards();
         CacheSelectedCardIDs();
@@ -107,20 +112,7 @@ public class CardManager : MonoBehaviour
         InitializeCardBack();
         PlaceCharactersOnStage();
         PlaceOpponentCharactersOnStage();
-
-        // Draw 5 cards at the start (hardcoded)
-        for (int i = 0; i < 5; i++)
-        {
-            await Task.Delay(600);
-            if (!canDraw)
-            {
-                i = i - 1;
-            }
-            else
-            {
-                DrawCard(false);
-            }
-        }
+        InitGameHandCard();
     }
 
     #region Cache Data from Scriptable Objects
@@ -318,6 +310,82 @@ public class CardManager : MonoBehaviour
     }
     #endregion
 
+    #region Turn Management
+    public void InitGameHandCard()
+    {
+        Sequence sequence = DOTween.Sequence();
+        sequence.AppendInterval(0.56f)
+                .AppendCallback(() => DrawCard(false))
+                .AppendInterval(0.56f)
+                .AppendCallback(() => DrawCard(false))
+                .AppendInterval(0.56f)
+                .AppendCallback(() => DrawCard(false))
+                .AppendInterval(0.56f)
+                .AppendCallback(() => DrawCard(false))
+                .AppendInterval(0.56f)
+                .AppendCallback(() => DrawCard(false))
+                .AppendCallback(() => gameManagerRef.ReadyToGameServerRpc());
+
+        sequence.Play();
+    }
+
+    public void StartTurn()
+    {
+        actionPoint = 1;
+
+        // Start Turn Anim -> Draw Card -> Start Action
+        Sequence sequence = DOTween.Sequence();
+        sequence.AppendCallback(() => turnIndicator.ShowYourTurn())
+                .AppendInterval(turnIndicator.animDuration)
+                .AppendCallback(() => DrawCard(false)) // Draw a card
+                .AppendInterval(drawAnimDuration)
+                .AppendCallback(() => StartAction());  // Start Action
+
+        sequence.Play();
+    }
+
+    public void OpponentStartTurn()
+    {
+        // Opponent Start Turn Anim
+        Sequence sequence = DOTween.Sequence();
+        sequence.AppendCallback(() => turnIndicator.ShowOpponentTurn())
+                .AppendInterval(turnIndicator.animDuration);
+
+        sequence.Play();
+    }
+
+    private void StartAction()
+    {
+        canUseCard = true;
+    }
+
+    public void DoAction(int AP)
+    {
+        actionPoint -= AP;
+        CheckActionPoint();
+    }
+
+    private void CheckActionPoint()
+    {
+        if (actionPoint == 0)
+        {
+            canUseCard = false;
+            EndTurn();
+        }
+    }
+
+    private void EndTurn()
+    {
+        // End Turn Anim -> End Turn
+        Sequence sequence = DOTween.Sequence();
+        sequence.AppendCallback(() => turnIndicator.EndYourTurn())
+                .AppendInterval(turnIndicator.animDuration)
+                .AppendCallback(() => gameManagerRef.SendEndTurnRpc());
+
+        sequence.Play();
+    }
+    #endregion
+
     #region Card Drawing
     // Mock up for card drawing
     private void InitializeCardBack()
@@ -330,7 +398,7 @@ public class CardManager : MonoBehaviour
 
     public void DrawCard(bool isCharacterCard)
     {
-        if (currentPoolSize > 0 && canDraw)
+        if (currentPoolSize > 0)
         {
             canDraw = false;
 
