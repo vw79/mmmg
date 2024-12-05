@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc1572589ccebe64f8f9929cee1ec63d, type: 3}
+  m_Name: SavedSelectedCards
+  m_EditorClassIdentifier: 
+  selectedCharacterIDs:
+  - c00
+  - c01
+  - c02
+  - c03
+  selectedActionCardIDs:
+  - a03
+  - a03
+  - a07
+  - a07
+  - a06
+  - a06
+  - a05
+  - a05
+  - a04
+  - a04
+  - a08
+  - a08
+  - a09
+  - a09
+  - a10
+  - a11
+  - a11
+  - a15
+  - a14
+  - a10

@@ -66,7 +66,7 @@ public class GameManager : NetworkBehaviour
             cardManager = FindObjectOfType<CardManager>();
         }
 
-        selectedCards = cardManager.selectedCards;
+        selectedCards = cardManager.savedCards;
         List<string> characters = selectedCards.selectedCharacterIDs;
 
         Debug.Log(NetworkManager.Singleton.LocalClientId + " " + characters[0] + " " + characters[1] + " " + characters[2] + " " + characters[3]);

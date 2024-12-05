@@ -336,7 +336,7 @@ public class CardSelectionManager : MonoBehaviour
         // Check if exactly 6 characters are selected
         if (selectedCardsData.selectedCharacterIDs.Count != maxSelectableCharacters)
         {
-            Debug.LogWarning("You must select exactly 6 characters.");
+            Debug.LogWarning($"You must select exactly {maxSelectableCharacters} characters.");
             return false;
         }
 
@@ -371,14 +371,15 @@ public class CardSelectionManager : MonoBehaviour
         newSelectedCardsData.selectedActionCardIDs = new List<string>(selectedCardsData.selectedActionCardIDs);
 
 #if UNITY_EDITOR
-        string path = "Assets/SavedSelectedCards.asset";
-        AssetDatabase.CreateAsset(newSelectedCardsData, path);
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        //string path = "Assets/SavedSelectedCards.asset";
+        //AssetDatabase.CreateAsset(newSelectedCardsData, path);
+        //AssetDatabase.SaveAssets();
+        //AssetDatabase.Refresh();
 
-        Debug.Log($"Selected cards successfully saved at {path}");
+        //Debug.Log($"Selected cards successfully saved at {path}");
+        JsonSaveDeck.instance.SaveDeck(newSelectedCardsData);
 #else
-        Debug.LogError("Saving ScriptableObject assets is only supported in the Unity Editor.");
+        JsonSaveDeck.instance.SaveDeck(newSelectedCardsData);
 #endif
     }
     #endregion

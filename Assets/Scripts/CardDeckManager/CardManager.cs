@@ -26,6 +26,7 @@ public class CardManager : MonoBehaviour
     [Header("Scriptable Objects")]
     public AllCardDatabase allCardDatabase;
     public SelectedCardData selectedCards;
+    public SelectedCardData savedCards;
 
     [Header("Card Pool")]
     public int initialPoolSize;
@@ -97,7 +98,12 @@ public class CardManager : MonoBehaviour
 
     void Start()
     {
+        GetDeckFromSaveFile();
+    }
 
+    private void GetDeckFromSaveFile()
+    {
+          savedCards = JsonSaveDeck.instance.LoadDeck();
     }
 
     public void StartGame()
@@ -132,10 +138,10 @@ public class CardManager : MonoBehaviour
 
     private void CacheSelectedCardIDs()
     {
-        if (selectedCards != null)
+        if (savedCards != null)
         {
-            selectedCharacterIDs = new List<string>(selectedCards.selectedCharacterIDs);
-            selectedActionCardIDs = new List<string>(selectedCards.selectedActionCardIDs);
+            selectedCharacterIDs = new List<string>(savedCards.selectedCharacterIDs);
+            selectedActionCardIDs = new List<string>(savedCards.selectedActionCardIDs);
         }
         else
         {
