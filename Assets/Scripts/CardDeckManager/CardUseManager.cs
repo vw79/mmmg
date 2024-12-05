@@ -20,6 +20,8 @@ public class CardUseManager : MonoBehaviour
     private GameManager gameManagerRef;
     public static CardUseManager Instance { get; private set; }
 
+    private string attackerID;
+
     private void Awake()
     {
         if (Instance == null)
@@ -221,6 +223,7 @@ public class CardUseManager : MonoBehaviour
     private void HandleCardUsage(GameObject card, CardData usedCardData, CardData hoveredCardData)
     {
         Debug.Log($"Card '{usedCardData.cardName}' is used on '{hoveredCardData.cardName}'.");
+        attackerID = hoveredCardData.cardID;
 
         // Synchronize card usage across clients (optional netcode integration)
         SynchronizeCardUsage(card, usedCardData, hoveredCardData);
@@ -375,7 +378,7 @@ public class CardUseManager : MonoBehaviour
 
     private void SynchronizeOpponentCharacterHit(int charIndex)
     {
-        gameManagerRef.CharacterHitServerRpc(charIndex, 1);
+        gameManagerRef.CharacterHitServerRpc(charIndex, 1, attackerID);
     }
 
     private void SynchronizeCardReturn(GameObject card)

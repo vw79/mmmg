@@ -178,25 +178,25 @@ public class GameManager : NetworkBehaviour
 
     #region Server Character Hit
     [Rpc(SendTo.Server, RequireOwnership = false)]
-    public void CharacterHitServerRpc(int charIndex, int damage)
+    public void CharacterHitServerRpc(int charIndex, int damage, string attackerID)
     {
-        GameHost.Instance.RequestCharacterHitServerRpc(OwnerClientId, charIndex, damage);
+        GameHost.Instance.RequestCharacterHitServerRpc(OwnerClientId, charIndex, damage, attackerID);
     }
 
     // ClientRpc for target
     [ClientRpc]
-    public void CharacterHitClientRpc(int charIndex, int damage)
+    public void CharacterHitClientRpc(int charIndex, int damage, string attackerID)
     {
         if (!IsOwner) return;
-        cardManager.OnSelfCharacterGetHit(charIndex, damage);
+        cardManager.OnSelfCharacterGetHit(charIndex, damage, attackerID);
     }
 
     // ClientRpc for attacker
     [ClientRpc]
-    public void CharacterAttackClientRpc(int charIndex, int damage)
+    public void CharacterAttackClientRpc(int charIndex, int damage, string attackerID)
     {
         if (!IsOwner) return;
-        cardManager.OnOpponentCharacterGetHit(charIndex, damage);
+        cardManager.OnOpponentCharacterGetHit(charIndex, damage, attackerID);
     }
     #endregion
 

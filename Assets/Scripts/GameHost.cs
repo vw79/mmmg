@@ -156,13 +156,13 @@ public class GameHost : MonoBehaviour
     }
 
     [Rpc(SendTo.Server,RequireOwnership = false)]
-    public void RequestCharacterHitServerRpc(ulong clientID, int charIndex, int damage)
+    public void RequestCharacterHitServerRpc(ulong clientID, int charIndex, int damage, string attackerID)
     {
         GameManager attacker = gameManagers.Find(x => x.OwnerClientId == clientID);
         GameManager target = gameManagers.Find(x => x.OwnerClientId != clientID);
 
-        attacker.CharacterAttackClientRpc(charIndex, damage);
-        target.CharacterHitClientRpc(charIndex, damage);
+        attacker.CharacterAttackClientRpc(charIndex, damage, attackerID);
+        target.CharacterHitClientRpc(charIndex, damage, attackerID);
 
     }
 

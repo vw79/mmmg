@@ -97,7 +97,7 @@ public class CardManager : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     public void StartGame()
@@ -444,7 +444,7 @@ public class CardManager : MonoBehaviour
         else
         {
             Debug.LogWarning("canDraw = false or No cards left!");
-        }      
+        }
     }
 
     private void AnimateCardBack(CardData cardData, bool isLastCard)
@@ -509,7 +509,7 @@ public class CardManager : MonoBehaviour
             {
                 opponentCardBackInstance.SetActive(false);
                 // Display the card back on the canvas
-                if(actionCardsDictionary.TryGetValue("e00", out CardData cardData))
+                if (actionCardsDictionary.TryGetValue("e00", out CardData cardData))
                 {
                     AddCardToEnemyHand(cardData);
                 }
@@ -597,7 +597,7 @@ public class CardManager : MonoBehaviour
     #region Character Attack
 
     // Function for attacker attacks target
-    public void OnOpponentCharacterGetHit(int charIndex, int damage)
+    public void OnOpponentCharacterGetHit(int charIndex, int damage, string attackerID)
     {
         opponentCharacterCardData[charIndex].TakeDamage(damage);
         if (opponentCharacterCardData[charIndex].GetHealth() <= 0)
@@ -605,12 +605,20 @@ public class CardManager : MonoBehaviour
             // Callback to server
             gameManagerRef.AddScoreServerRpc();
         }
+        CallVFX(charIndex + 4, attackerID);
     }
 
     // Function for target get hit
-    public void OnSelfCharacterGetHit(int charIndex, int damage)
+    public void OnSelfCharacterGetHit(int charIndex, int damage, string attackerID)
     {
         selfCharacterCardData[charIndex].TakeDamage(damage);
+        CallVFX(charIndex, attackerID);
+    }
+
+    public void CallVFX(int charIndex, string attackerID)
+    {
+        GameObject vfxObject = Instantiate(characterVfxDictionary[attackerID], GetCharacterPosition(charIndex).position + new Vector3(0,0.1f,0), Quaternion.identity);
+        Destroy(vfxObject, 3f);
     }
 
     #endregion
