@@ -1053,7 +1053,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e72e0f66a28199e41bb5b06f0c9eea8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultCardData: {fileID: 11400000, guid: ca0dda667e31ce142bdb582214584602, type: 2}
+  defaultCardData: {fileID: 11400000, guid: 710bddbe2f8359f42b6f6ed4a5b68506, type: 2}
 --- !u!4 &1684457023
 Transform:
   m_ObjectHideFlags: 0

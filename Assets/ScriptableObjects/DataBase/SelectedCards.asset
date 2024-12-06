@@ -13,28 +13,16 @@ MonoBehaviour:
   m_Name: SelectedCards
   m_EditorClassIdentifier: 
   selectedCharacterIDs:
-  - c01
-  - c02
-  - c03
-  - c04
+  - c00
+  - 
+  - 
+  - 
   selectedActionCardIDs:
-  - a11
-  - a11
-  - a26
-  - a23
-  - a18
-  - a04
-  - a07
-  - a08
-  - a10
-  - a22
-  - a22
-  - a26
-  - a23
-  - a18
-  - a04
-  - a07
-  - a08
-  - a10
-  - a09
-  - a09
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
