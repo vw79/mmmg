@@ -67,7 +67,6 @@ public class Scoreboard : MonoBehaviour
 
     public void DelayAndQuitToMainMenu()
     {
-        AuthenticationService.Instance.SignOut();
         NetworkManager.Singleton.Shutdown();
 
         // Cleanup
