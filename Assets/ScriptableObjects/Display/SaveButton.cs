@@ -4,12 +4,8 @@ using UnityEngine;
 
 public class SaveButton : MonoBehaviour
 {
-    private CardSelectionManager cardSelectionManager;
-
-    void Start()
-    {
-        cardSelectionManager = FindObjectOfType<CardSelectionManager>();
-    }
+    [SerializeField] private CardSelectionManager cardSelectionManager;
+    [SerializeField] PromptManager promptManager;
 
     public void OnSaveButtonClicked()
     {
@@ -19,11 +15,11 @@ public class SaveButton : MonoBehaviour
             if (cardSelectionManager.ValidateSelections())
             {
                 cardSelectionManager.SaveSelectedCards();
-                Debug.Log("Selected cards successfully saved.");
+                promptManager.ShowPopup("Deck Saved", Color.green);
             }
             else
             {
-                Debug.LogWarning("Invalid selection. Ensure you have selected 6 characters and within the allowed action cards limit.");
+                promptManager.ShowPopup("Cannot Save", Color.red);
             }
         }
         else
