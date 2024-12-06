@@ -159,6 +159,19 @@ public class GameManager : NetworkBehaviour
         if (!IsOwner) return;
         cardManager.OpponentAnimateDrawCard();
     }
+
+    [Rpc(SendTo.Server, RequireOwnership = false)]
+    public void SendEmptyDeckServerRpc()
+    {
+        GameHost.Instance.RequestEmptyDeckServerRpc(OwnerClientId);
+    }
+
+    [ClientRpc]
+    public void EmptyDeckClientRpc()
+    {
+        if (!IsOwner) return;
+        cardManager.OnOpponentEmptyDeck();
+    }
     #endregion
 
     #region Server Card Use Animation

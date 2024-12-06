@@ -149,6 +149,12 @@ public class GameHost : MonoBehaviour
         gameManagers.Find(x => x.OwnerClientId != clientID).AnimateDrawClientRpc(clientID);
     }
 
+    [Rpc(SendTo.Server, RequireOwnership = false)]
+    public void RequestEmptyDeckServerRpc(ulong clientID)
+    {
+        gameManagers.Find(x => x.OwnerClientId != clientID).EmptyDeckClientRpc();
+    }
+
     [Rpc(SendTo.Server,RequireOwnership = false)]
     public void RequestUseCardServerRpc(ulong clientID, string cardID, int charIndex)
     {

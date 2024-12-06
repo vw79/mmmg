@@ -187,7 +187,7 @@ public class CardUseManager : MonoBehaviour
 
         if (CardManager.Instance.canUseCard == false)
         {
-            Debug.Log("Cannot use card at the moment. Card returned.");
+            promptManager.ShowPopup("Not Your Turn", Color.red);
             ReturnCardToOriginalPosition(card);
             return;
         }
@@ -207,18 +207,21 @@ public class CardUseManager : MonoBehaviour
         CardData usedCardData = handCard.cardData;
 
         // Validate if card is alive
-        if (gameManagerRef.ValidateSelfCharacterAlive(currentHoveredAreaIndex))
+        if (!gameManagerRef.ValidateSelfCharacterAlive(currentHoveredAreaIndex))
         {
-            // Validate card colors
-            if (ValidateCardColor(usedCardData, hoveredCardData))
-            {
-                HandleCardUsage(card, usedCardData, hoveredCardData);
-                return;
-            }
+            promptManager.ShowPopup("Character dead", Color.red);
+            ReturnCardToOriginalPosition(card);
+            return;
         }
 
-        Debug.Log($"Card '{usedCardData.cardName}' color does not match with '{hoveredCardData.cardName}' , or the character is dead!");
-        promptManager.ShowPopup("Invalid Card", Color.red);
+        if (ValidateCardColor(usedCardData, hoveredCardData))
+        {
+            HandleCardUsage(card, usedCardData, hoveredCardData);
+            return;
+        }
+
+        Debug.Log($"Card '{usedCardData.cardName}' color does not match with '{hoveredCardData.cardName}'!");
+        promptManager.ShowPopup("Wrong Color", Color.red);
         ReturnCardToOriginalPosition(card);
     }
 

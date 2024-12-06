@@ -50,6 +50,7 @@ public class CardManager : MonoBehaviour
 
     [Header("Deck Visuals")]
     public GameObject cardDeckMesh;
+    public GameObject opponentCardDeckMesh;
     public Button deckButton;
 
     [Header("Character Placement")]
@@ -75,6 +76,7 @@ public class CardManager : MonoBehaviour
     public GameHost gameHost;
     public TurnIndicator turnIndicator;
     public Button endTurnButton;
+    public PromptManager promptManager;
 
     // Turn-based variables
     public bool canUseCard = false;
@@ -385,6 +387,7 @@ public class CardManager : MonoBehaviour
 
     public void StartTurn()
     {
+        promptManager.ShowPopup("Your Turn", Color.blue);
         actionPoint = 1;
 
         // Start Turn Anim -> Draw Card -> Start Action
@@ -400,6 +403,7 @@ public class CardManager : MonoBehaviour
 
     public void OpponentStartTurn()
     {
+        promptManager.ShowPopup("Opponent Turn", Color.red);
         // Opponent Start Turn Anim
         Sequence sequence = DOTween.Sequence();
         sequence.AppendCallback(() => turnIndicator.ShowOpponentTurn())
@@ -509,6 +513,7 @@ public class CardManager : MonoBehaviour
         if (isLastCard)
         {
             cardDeckMesh.SetActive(false);
+            gameManagerRef.SendEmptyDeckServerRpc();
             deckButton.interactable = false;
         }
 
@@ -534,6 +539,11 @@ public class CardManager : MonoBehaviour
                 DisplayCardOnCanvas(cardData);
                 cardBackInstance.SetActive(false);
             });
+    }
+
+    public void OnOpponentEmptyDeck()
+    {
+        opponentCardDeckMesh.SetActive(false);
     }
 
     public void OpponentAnimateDrawCard()

@@ -23,6 +23,7 @@ public class TestLobby : MonoBehaviour
     public LobbyUI lobbyUI;
     public string gameSceneName;
     public SceneTransition transitionTool;
+    public PromptManager promptManager;
 
     public static TestLobby Instance;
 
@@ -50,7 +51,13 @@ public class TestLobby : MonoBehaviour
         // Validate if the player name is empty
         if (string.IsNullOrEmpty(textBox.text))
         {
-            Debug.Log("Player name cannot be empty");
+            promptManager.ShowPopup("Invalid name", Color.red);
+            return;
+        }
+
+        if (textBox.text.Length > 8)
+        {
+            promptManager.ShowPopup("Too long", Color.red);
             return;
         }
 
@@ -133,6 +140,16 @@ public class TestLobby : MonoBehaviour
     {
         try
         {
+            if (string.IsNullOrEmpty(input.text))
+            {
+                promptManager.ShowPopup("Invalid name", Color.red);
+                return;
+            }
+            if (input.text.Length > 12)
+            {
+                promptManager.ShowPopup("Too long", Color.red);
+                return;
+            }
             string lobbyName = input.text;
             int maxPlayer = 2;
             CreateLobbyOptions options = new CreateLobbyOptions() 
