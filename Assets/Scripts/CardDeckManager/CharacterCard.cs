@@ -30,7 +30,9 @@ public class CharacterCard : MonoBehaviour
 
     [Header("Health Bar")]
     public GameObject healthBar;
+    public GameObject secondHealthBar;
     public GameObject healthPrefab;
+    public GameObject secondHealthPrefab;
     public int maxHealth;
     private int currentHealth;
 
@@ -70,7 +72,7 @@ public class CharacterCard : MonoBehaviour
             SetSkillIcon(skill3Image, cardData.skill3HexColor);
 
             // Populate health bar with maxHealth
-            PopulateHealthBar(maxHealth);
+            UpdateHealthBar();
         }
         else
         {
@@ -84,6 +86,7 @@ public class CharacterCard : MonoBehaviour
         for (int i = 0; i < health; i++)
         {
             Instantiate(healthPrefab, healthBar.transform);
+            Instantiate(healthPrefab, secondHealthBar.transform);
         }
     }
 
@@ -139,6 +142,11 @@ public class CharacterCard : MonoBehaviour
     {
         // Destroy all health units
         foreach (Transform child in healthBar.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (Transform child in secondHealthBar.transform)
         {
             Destroy(child.gameObject);
         }
