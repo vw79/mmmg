@@ -1884,6 +1884,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 251769480}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &251769482 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2559733100128160477, guid: b5d0082b45a340149ba7fc0e0233a534,
+    type: 3}
+  m_PrefabInstance: {fileID: 251769480}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdfe6e0d84d12f340891435d7d54ba5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &297925022
 GameObject:
   m_ObjectHideFlags: 0
@@ -3817,6 +3829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc9068cbd2431024ab42a50300d6b6d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  promptManager: {fileID: 251769482}
   selfInteractableAreas:
   - {fileID: 149649940}
   - {fileID: 615796820}

@@ -17,6 +17,7 @@ public class TestLobby : MonoBehaviour
     private bool isGameStarted = false;
     private float pingTimer = 15f;
     private float lobbyUpdateTimer = 1.5f;
+    private float lobbyRefreshTimer = 3f;
     private string playerName;
 
     public LobbyUI lobbyUI;
@@ -32,7 +33,15 @@ public class TestLobby : MonoBehaviour
 
     private void Start()
     {
-        //NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+
+        if(UnityServices.State == ServicesInitializationState.Initialized)
+        {
+            lobbyUI.ShowLobbyPanel();
+        }
+        else
+        {
+            lobbyUI.ShowLoginPanel();
+        }
     }
 
     // Similar to Login Function
@@ -58,6 +67,7 @@ public class TestLobby : MonoBehaviour
         };
 
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        await AuthenticationService.Instance.UpdatePlayerNameAsync(playerName);
 
         lobbyUI.ShowLobbyPanel();
         //RefreshLobbyList();
@@ -67,6 +77,7 @@ public class TestLobby : MonoBehaviour
     {
         HandlePingTimer();
         HandleLobbyUpdates();
+        HandleLobbyRefresh();
     }
 
     private async void HandlePingTimer()
@@ -107,6 +118,17 @@ public class TestLobby : MonoBehaviour
         }
     }
 
+    private void HandleLobbyRefresh()
+    {
+        if (joinedLobby != null | UnityServices.State == ServicesInitializationState.Uninitialized) return;
+        lobbyRefreshTimer -= Time.deltaTime;
+        if (lobbyRefreshTimer <= 0)
+        {
+            lobbyRefreshTimer = 3f;
+            RefreshLobbyList();
+        }
+    }
+
     public async void CreateLobby(TMP_InputField input)
     {
         try
@@ -142,11 +164,6 @@ public class TestLobby : MonoBehaviour
             QueryResponse QR = await Lobbies.Instance.QueryLobbiesAsync();
 
             lobbyUI.UpdateLobbyList(QR.Results);
-
-            foreach (Lobby lobby in QR.Results)
-            {
-                Debug_PrintLobby(lobby);
-            }
         }
         catch(LobbyServiceException e)
         {
@@ -252,14 +269,29 @@ public class TestLobby : MonoBehaviour
         }
     }
 
-    // Netcode: While Player Joined, Call this function
-    private void OnClientConnected(ulong clientID)
+    public async void LeaveLobby()
     {
-        if (!NetworkManager.Singleton.IsServer) return;
-        if (NetworkManager.Singleton.ConnectedClientsList.Count == 2)
+        if(joinedLobby != null)
         {
-            transitionTool.TransitionToScene(4);
-            return;
+            try
+            {
+                if (IsHost() & joinedLobby.Players.Count == 1)
+                {
+                    await Lobbies.Instance.DeleteLobbyAsync(joinedLobby.Id);
+                }
+                else
+                {
+                    await Lobbies.Instance.RemovePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId);
+                }
+                joinedLobby = null;
+                hostLobby = null;
+                isGameStarted = false;
+                lobbyUI.ShowLobbyPanel();
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.Log(e);
+            }
         }
     }
 
