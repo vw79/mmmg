@@ -260,6 +260,20 @@ public class CardManager : MonoBehaviour
                         canDraw = true;
                     });
 
+                SpriteRenderer spriteRenderer = targetPosition.GetComponent<SpriteRenderer>();
+                if (spriteRenderer != null)
+                {
+                    Color color;
+                    if (TryGetColorFromString(characterData.colour, out color))
+                    {
+                        spriteRenderer.color = color; // Set the color on the SpriteRenderer
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Unknown color string '{characterData.colour}' for character ID {characterID}.");
+                    }
+                }
+
                 if (i < interactableAreas.Count)
                 {
                     interactableAreaToCardData[interactableAreas[i]] = characterData;
@@ -304,6 +318,20 @@ public class CardManager : MonoBehaviour
                         canDraw = true;
                     });
 
+                SpriteRenderer spriteRenderer = targetPosition.GetComponent<SpriteRenderer>();
+                if (spriteRenderer != null)
+                {
+                    Color color;
+                    if (TryGetColorFromString(characterData.colour, out color))
+                    {
+                        spriteRenderer.color = color; // Set the color on the SpriteRenderer
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Unknown color string '{characterData.colour}' for character ID {characterID}.");
+                    }
+                }
+
                 //if (i < interactableAreas.Count)
                 //{
                 //    interactableAreaToCardData[interactableAreas[i]] = characterData;
@@ -313,6 +341,25 @@ public class CardManager : MonoBehaviour
             {
                 Debug.LogWarning($"Character ID {characterID} not found in charactersDictionary!");
             }
+        }
+    }
+
+    private bool TryGetColorFromString(string colorString, out Color color)
+    {
+        switch (colorString.ToLower())
+        {
+            case "red":
+                color = Color.red;
+                return true;
+            case "green":
+                color = Color.green;
+                return true;
+            case "blue":
+                color = Color.blue;
+                return true;
+            default:
+                color = Color.white; // Use a default color if the string doesn't match
+                return false;
         }
     }
     #endregion
