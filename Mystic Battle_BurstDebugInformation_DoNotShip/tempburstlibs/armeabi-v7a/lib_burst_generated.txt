@@ -9,7 +9,6 @@ Library: D:\Unity\Mystic Battle\Temp\BurstOutput\tempburstlibs\armeabi-v7a\lib_b
 --target-framework=NetFramework
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=D:\Unity\Mystic Battle\Temp\Burst
---debug=Full
 --key-folder=C:/Program Files/Unity/Hub/Editor/2022.3.45f1/Editor/Data/PlaybackEngines/AndroidPlayer
 --decode-folder=D:\Unity\Mystic Battle\Library\Burst
 --output=D:\Unity\Mystic Battle\Temp\BurstOutput\tempburstlibs\armeabi-v7a\lib_burst_generated
@@ -113,7 +112,6 @@ Library: D:\Unity\Mystic Battle\Temp\BurstOutput\tempburstlibs\armeabi-v7a\lib_b
 --float-mode=Fast
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=D:\Unity\Mystic Battle\Temp\Burst
---debug=Full
 --key-folder=C:/Program Files/Unity/Hub/Editor/2022.3.45f1/Editor/Data/PlaybackEngines/AndroidPlayer
 --decode-folder=D:\Unity\Mystic Battle\Library\Burst
 --output=D:\Unity\Mystic Battle\Temp\BurstOutput\tempburstlibs\armeabi-v7a\lib_burst_generated
