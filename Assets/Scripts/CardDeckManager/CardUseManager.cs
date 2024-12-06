@@ -217,6 +217,7 @@ public class CardUseManager : MonoBehaviour
         }
 
         Debug.Log($"Card '{usedCardData.cardName}' color does not match with '{hoveredCardData.cardName}' , or the character is dead!");
+        SetAreaInvalidColor(currentHoveredArea);
         ReturnCardToOriginalPosition(card);
     }
 
@@ -245,6 +246,7 @@ public class CardUseManager : MonoBehaviour
     {
         if (area != null)
         {
+            area.color = HexToColor("#00FF00");
             // Scale up slightly
             area.transform.DOScale(1.3f, 0.2f).OnComplete(() =>
             {
@@ -284,11 +286,21 @@ public class CardUseManager : MonoBehaviour
 
     #region Utility Methods
 
+    private Color HexToColor(string hex)
+    {
+        if (ColorUtility.TryParseHtmlString(hex, out Color color))
+        {
+            return color;
+        }
+        Debug.LogWarning($"Invalid Hex Color: {hex}. Using default color.");
+        return Color.white; // Fallback color
+    }
+
     private void SetAreaHoverColor(Image area)
     {
         if (area != null)
         {
-            Color hoverColor = Color.red;
+            Color hoverColor = Color.white;
             hoverColor.a = originalAlpha;
             area.color = hoverColor;
         }
@@ -301,6 +313,14 @@ public class CardUseManager : MonoBehaviour
             Color resetColor = originalColor;
             resetColor.a = originalAlpha;
             area.color = resetColor;
+        }
+    }
+
+    private void SetAreaInvalidColor(Image area)
+    {
+        if (area != null)
+        {
+            area.color = HexToColor("#FF0000"); // Red for invalid use
         }
     }
 
