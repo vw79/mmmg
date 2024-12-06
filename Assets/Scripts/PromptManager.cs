@@ -30,7 +30,7 @@ public class PromptManager : MonoBehaviour
 
         DOVirtual.DelayedCall(2f, () =>
         {
-            popupPanel.DOLocalMove(originalPosition + new Vector3(-200, 0, 0), 0.5f).SetEase(Ease.InQuad);
+            popupPanel.DOLocalMove(originalPosition + new Vector3(200, 0, 0), 0.5f).SetEase(Ease.InQuad);
             popupCanvasGroup.DOFade(0, 0.5f);
         });
     }

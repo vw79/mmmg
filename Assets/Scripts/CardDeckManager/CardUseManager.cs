@@ -8,6 +8,7 @@ public class CardUseManager : MonoBehaviour
 {
     private Image currentHoveredArea;
     private int currentHoveredAreaIndex;
+    public PromptManager promptManager;
 
     [Header("Interactable Areas")]
     public Image[] selfInteractableAreas;
@@ -217,7 +218,7 @@ public class CardUseManager : MonoBehaviour
         }
 
         Debug.Log($"Card '{usedCardData.cardName}' color does not match with '{hoveredCardData.cardName}' , or the character is dead!");
-        SetAreaInvalidColor(currentHoveredArea);
+        promptManager.ShowPopup("Invalid Card", Color.red);
         ReturnCardToOriginalPosition(card);
     }
 
