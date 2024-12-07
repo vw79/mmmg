@@ -250,15 +250,20 @@ public class CardUseManager : MonoBehaviour
     {
         if (area != null)
         {
-            area.color = HexToColor("#00FF00");
+            Material material = area.material;
+            if (material != null)
+            {
+                material.SetColor("_Color", HexToColor("#00FF00")); // Green color for animation
+            }
+
             // Scale up slightly
-            area.transform.DOScale(1.3f, 0.2f).OnComplete(() =>
+            area.transform.DOScale(1.3f, 0.1f).OnComplete(() =>
             {
                 // Then fade out and hide after a delay
-                area.GetComponent<CanvasGroup>().DOFade(0, 0.3f).SetDelay(0.2f).OnComplete(() =>
+                area.GetComponent<CanvasGroup>().DOFade(0, 0.15f).SetDelay(0.1f).OnComplete(() =>
                 {
+                    ResetAreaColor(area);
                     area.gameObject.SetActive(false);
-                    // Reset scale
                     area.transform.localScale = Vector3.one;
                 });
             });
@@ -304,9 +309,12 @@ public class CardUseManager : MonoBehaviour
     {
         if (area != null)
         {
-            Color hoverColor = Color.white;
-            hoverColor.a = originalAlpha;
-            area.color = hoverColor;
+            Material material = area.material;
+
+            if (material != null)
+            {
+                material.SetColor("_Color", new Color(1, 1, 1, originalAlpha)); // White color with original alpha
+            }
         }
     }
 
@@ -314,17 +322,24 @@ public class CardUseManager : MonoBehaviour
     {
         if (area != null)
         {
-            Color resetColor = originalColor;
-            resetColor.a = originalAlpha;
-            area.color = resetColor;
+            Material material = area.material;
+            if (material != null)
+            {
+                material.SetColor("_Color", new Color(originalColor.r, originalColor.g, originalColor.b, originalAlpha));
+            }
         }
     }
 
+    // Not using for now
     private void SetAreaInvalidColor(Image area)
     {
         if (area != null)
         {
-            area.color = HexToColor("#FF0000"); // Red for invalid use
+            Material material = area.material;
+            if (material != null)
+            {
+                material.SetColor("_Color", HexToColor("#FF0000")); // Red color for invalid use
+            }
         }
     }
 
