@@ -253,20 +253,35 @@ public class CardUseManager : MonoBehaviour
             Material material = area.material;
             if (material != null)
             {
-                material.SetColor("_Color", HexToColor("#00FF00")); // Green color for animation
-            }
+                // Set the initial color to green for the animation
+                Color color = HexToColor("#00FF00");
+                color.a = originalAlpha;
+                material.SetColor("_Color", color);
 
-            // Scale up slightly
-            area.transform.DOScale(1.3f, 0.1f).OnComplete(() =>
-            {
-                // Then fade out and hide after a delay
-                area.GetComponent<CanvasGroup>().DOFade(0, 0.15f).SetDelay(0.1f).OnComplete(() =>
+                // Animate the _Scale property of the shader using DOTween
+                float initialScale = material.GetFloat("_Scale");
+                material.DOFloat(1.2f, "_Scale", 0.35f).OnComplete(() =>
                 {
-                    ResetAreaColor(area);
-                    area.gameObject.SetActive(false);
-                    area.transform.localScale = Vector3.one;
+                    // Animate the _CanvasAlpha property to match the fade-out effect
+                    CanvasGroup canvasGroup = area.GetComponent<CanvasGroup>();
+                    if (canvasGroup != null)
+                    {
+                        DOTween.To(() => canvasGroup.alpha, x =>
+                        {
+                            canvasGroup.alpha = x;
+                            material.SetFloat("_CanvasAlpha", x); // Update shader alpha
+                        }, 0, 0.35f).SetDelay(0.2f).OnComplete(() =>
+                        {
+                            // Reset shader properties and area settings
+                            material.SetFloat("_Scale", initialScale);
+                            material.SetFloat("_CanvasAlpha", 1.0f); // Reset alpha
+                            ResetAreaColor(area);
+                            area.gameObject.SetActive(false);
+                            canvasGroup.alpha = 1.0f; // Reset CanvasGroup alpha
+                        });
+                    }
                 });
-            });
+            }
         }
     }
 

@@ -29,6 +29,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _CanvasAlpha: 1
     - _Scale: 1
     m_Colors:
     - _BottomLeft: {r: -292, g: -308, b: 0, a: 1}
