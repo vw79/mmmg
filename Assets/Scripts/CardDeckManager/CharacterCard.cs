@@ -90,7 +90,7 @@ public class CharacterCard : MonoBehaviour
         for (int i = 0; i < health; i++)
         {
             Instantiate(healthPrefab, healthBar.transform);
-            healthUnits[i].gameObject.SetActive(true);
+            healthUnits[i + 1].gameObject.SetActive(true);
         }
 
         secondHealthBar.GetComponent<HorizontalLayoutGroup>().spacing = (7 - health) * (-120);
@@ -171,7 +171,7 @@ public class CharacterCard : MonoBehaviour
         if(currentHealth <= 0)
         {
             Debug.Log($"{cardData.cardName} is dead.");
-            transform.DOLocalMoveY(-2, 1f);
+            transform.DOLocalMoveY(-20, 1f);
         }
     }
 
