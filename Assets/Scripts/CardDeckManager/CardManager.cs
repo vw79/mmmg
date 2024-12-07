@@ -45,6 +45,7 @@ public class CardManager : MonoBehaviour
     public float drawAnimDuration = 2f;
     public GameObject uiCardPrefab;
     public GameObject characterCardPrefab;
+    public GameObject opponentCharacterCardPrefab;
     public Transform handArea;
     public Transform enemyHandArea;
 
@@ -302,7 +303,7 @@ public class CardManager : MonoBehaviour
 
             if (charactersDictionary.TryGetValue(characterID, out CardData characterData))
             {
-                GameObject characterCard = Instantiate(characterCardPrefab, opponentDeckPosition.position, Quaternion.identity);
+                GameObject characterCard = Instantiate(opponentCharacterCardPrefab, opponentDeckPosition.position, Quaternion.identity);
 
                 CharacterCard characterCardScript = characterCard.GetComponent<CharacterCard>();
                 if (characterCardScript != null)

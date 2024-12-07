@@ -31,6 +31,7 @@ public class CharacterCard : MonoBehaviour
     [Header("Health Bar")]
     public GameObject healthBar;
     public GameObject secondHealthBar;
+    public Transform[] healthUnits;
     public GameObject healthPrefab;
     public GameObject secondHealthPrefab;
     public int maxHealth;
@@ -48,6 +49,9 @@ public class CharacterCard : MonoBehaviour
             // Assign maxHealth to cardData.health
             maxHealth = cardData.health;
             currentHealth = cardData.health;
+
+            // Get all health bar children
+            healthUnits = secondHealthBar.GetComponentsInChildren<Transform>(true);
 
             // Set card name and image
             cardNameText.text = cardData.cardName;
@@ -86,8 +90,10 @@ public class CharacterCard : MonoBehaviour
         for (int i = 0; i < health; i++)
         {
             Instantiate(healthPrefab, healthBar.transform);
-            Instantiate(healthPrefab, secondHealthBar.transform);
+            healthUnits[i].gameObject.SetActive(true);
         }
+
+        secondHealthBar.GetComponent<HorizontalLayoutGroup>().spacing = (7 - health) * (-120);
     }
 
     private void SetBackgroundColor(Image backgroundImage, string hexColor)
@@ -148,7 +154,7 @@ public class CharacterCard : MonoBehaviour
 
         foreach (Transform child in secondHealthBar.transform)
         {
-            Destroy(child.gameObject);
+            child.gameObject.SetActive(false);
         }
 
         // Populate health bar with currentHealth

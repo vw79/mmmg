@@ -1242,7 +1242,7 @@ GameObject:
   - component: {fileID: 3992515139350373517}
   - component: {fileID: 9059224437179682937}
   m_Layer: 0
-  m_Name: CharacterCardPrefab
+  m_Name: OpponentCharacterCardPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1343,6 +1343,7 @@ MonoBehaviour:
   skill3DescriptionText: {fileID: 1315038631051713876}
   healthBar: {fileID: 640735650570249864}
   secondHealthBar: {fileID: 8307785207925763523}
+  healthUnits: []
   healthPrefab: {fileID: 6242995236123947998, guid: 1751ce01519c76342ac531694ff59bdb,
     type: 3}
   secondHealthPrefab: {fileID: 334255169552427760, guid: 5b346c87dfe1fbf468e8a94ba4cc4293,
@@ -2279,7 +2280,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 58.9}
+  m_AnchoredPosition: {x: 0, y: -63.9}
   m_SizeDelta: {x: 922.5, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2123276044469949640

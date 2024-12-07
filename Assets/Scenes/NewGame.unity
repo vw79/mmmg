@@ -6593,6 +6593,12 @@ PrefabInstance:
       objectReference: {fileID: 846285282}
     - target: {fileID: 5023259859550625149, guid: e6425c9e3cc9e96459220c775e1915d6,
         type: 3}
+      propertyPath: opponentCharacterCardPrefab
+      value: 
+      objectReference: {fileID: 4951714966228469631, guid: 9be8d205bd564b244b741b880c83a1a7,
+        type: 3}
+    - target: {fileID: 5023259859550625149, guid: e6425c9e3cc9e96459220c775e1915d6,
+        type: 3}
       propertyPath: interactableAreas.Array.data[0]
       value: 
       objectReference: {fileID: 149649940}
