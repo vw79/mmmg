@@ -14860,7 +14860,7 @@ GameObject:
   - component: {fileID: 1872759723267199211}
   - component: {fileID: 1725928795165514149}
   m_Layer: 0
-  m_Name: Sratch
+  m_Name: Scratch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19748,7 +19748,7 @@ GameObject:
   - component: {fileID: 182201187908854968}
   - component: {fileID: 683228375207438739}
   m_Layer: 0
-  m_Name: Sratch
+  m_Name: Scratch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24636,7 +24636,7 @@ GameObject:
   - component: {fileID: 4436954165274707206}
   - component: {fileID: 1147452330779960801}
   m_Layer: 0
-  m_Name: Sratch
+  m_Name: Scratch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
