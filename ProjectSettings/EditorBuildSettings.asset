@@ -12,10 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Lobby.unity
     guid: db9a140b193276e4aba3b772358757fd
   - enabled: 1
-    path: Assets/Scenes/Test Network.unity
-    guid: 7e7b880b97b92594a80b0ccd70d8e748
-  - enabled: 1
-    path: Assets/Scenes/DeckEditor 1.unity
+    path: Assets/Scenes/DeckEditor.unity
     guid: ce8b21acfaff68043a6edad32ee8e4b2
   - enabled: 1
     path: Assets/Scenes/NewGame.unity

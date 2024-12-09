@@ -276,7 +276,7 @@ public class TestLobby : MonoBehaviour
                 joinedLobby = lobby;
 
                 Debug.Log("Move to Battle Scene");
-                transitionTool.TransitionToScene(4);
+                transitionTool.TransitionToScene(3);
                 //SceneManager.LoadSceneAsync(gameSceneName, LoadSceneMode.Single);
             }
             catch (LobbyServiceException e)
