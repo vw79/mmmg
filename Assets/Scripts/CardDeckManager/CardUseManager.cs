@@ -206,6 +206,13 @@ public class CardUseManager : MonoBehaviour
 
         CardData usedCardData = handCard.cardData;
 
+        if (gameManagerRef == null)
+        {
+            Debug.LogWarning("GameManager reference is missing.");
+            ReturnCardToOriginalPosition(card);
+            return;
+        }
+
         // Validate if card is alive
         if (!gameManagerRef.ValidateSelfCharacterAlive(currentHoveredAreaIndex))
         {
@@ -427,12 +434,18 @@ public class CardUseManager : MonoBehaviour
     {
         // Netcode: Broadcast card usage event to all clients
         // Example: Send cardID and hoveredAreaID
-        gameManagerRef.UseCardServerRpc(usedCardData.cardID, currentHoveredAreaIndex);
+        if (gameManagerRef != null)
+        {
+            gameManagerRef.UseCardServerRpc(usedCardData.cardID, currentHoveredAreaIndex);
+        }
     }
 
     private void SynchronizeOpponentCharacterHit(int charIndex)
     {
-        gameManagerRef.CharacterHitServerRpc(charIndex, 1, attackerID);
+        if (gameManagerRef != null)
+        {
+            gameManagerRef.CharacterHitServerRpc(charIndex, 1, attackerID);
+        }
     }
 
     private void SynchronizeCardReturn(GameObject card)

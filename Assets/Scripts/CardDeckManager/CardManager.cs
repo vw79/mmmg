@@ -387,7 +387,13 @@ public class CardManager : MonoBehaviour
                 .AppendCallback(() => DrawCard(false))
                 .AppendInterval(0.56f)
                 .AppendCallback(() => DrawCard(false))
-                .AppendCallback(() => gameManagerRef.ReadyToGameServerRpc());
+                .AppendCallback(() => 
+                    {   
+                        if (gameManagerRef != null) 
+                        {
+                            gameManagerRef.ReadyToGameServerRpc();
+                        } 
+                    });
 
         sequence.Play();
     }
@@ -498,9 +504,12 @@ public class CardManager : MonoBehaviour
                 //Debug.Log($"Cards remaining in pool: {currentPoolSize}");
 
                 // Synchronize the card animation with the opponent
-                if (gameManagerRef != null & gameManagerRef.IsOwner)
+                if (gameManagerRef != null)
                 {
-                    gameManagerRef.DrawCardServerRpc();
+                    if (gameManagerRef.IsOwner)
+                    {
+                        gameManagerRef.DrawCardServerRpc();
+                    }
                 }
             }
             else
