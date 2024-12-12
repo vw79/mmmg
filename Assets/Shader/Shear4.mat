@@ -34,7 +34,7 @@ Material:
     m_Colors:
     - _BottomLeft: {r: 395.4, g: -308, b: 0, a: 1}
     - _BottomRight: {r: 635.6, g: -308, b: 0, a: 1}
-    - _Color: {r: 0.6627451, g: 0.6627451, b: 0.6627451, a: 0.5019608}
+    - _Color: {r: 1, g: 1, b: 1, a: 0.5019608}
     - _TopLeft: {r: 338.1, g: -4, b: 0, a: 1}
     - _TopRight: {r: 543.5, g: -4, b: 0, a: 1}
   m_BuildTextureStacks: []

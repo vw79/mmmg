@@ -19,6 +19,7 @@ public class Scoreboard : MonoBehaviour
 
     private void Start()
     {
+        if (NetworkManager.Singleton == null) return;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
     }
 

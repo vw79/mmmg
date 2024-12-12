@@ -26,6 +26,11 @@ public class GameHost : MonoBehaviour
             Instance = this;
         }
 
+        if (NetworkManager.Singleton == null)
+        {
+            return;
+        }
+
         if (!NetworkManager.Singleton.IsHost)
         {
             enabled = false;

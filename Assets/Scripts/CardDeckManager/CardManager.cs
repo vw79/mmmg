@@ -103,6 +103,12 @@ public class CardManager : MonoBehaviour
     void Start()
     {
         GetDeckFromSaveFile();
+
+        if (NetworkManager.Singleton == null)
+        {
+            StartGame();
+            canUseCard = true;
+        }
     }
 
     private void GetDeckFromSaveFile()
