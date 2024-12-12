@@ -14,6 +14,7 @@ public class Scoreboard : MonoBehaviour
     public GameObject winLosePanel;
     public GameObject playerWinText;
     public GameObject playerLoseText;
+    public GameObject playerDrawText;
 
     public SceneTransition transitionTool;
 
@@ -58,6 +59,26 @@ public class Scoreboard : MonoBehaviour
             winLosePanel.GetComponent<CanvasGroup>().DOFade(0.5f, 1f).OnComplete(() =>
             {
                 playerLoseText.SetActive(true);
+                DOVirtual.DelayedCall(3f, () =>
+                {
+                    DelayAndQuitToMainMenu();
+                });
+            });
+        });
+    }
+
+    public void ShowDrawPanel()
+    {
+        winLosePanel.SetActive(true);
+        if(playerWinText.activeSelf || playerLoseText.activeSelf)
+        {
+            return;
+        }
+        DOVirtual.DelayedCall(1f, () =>
+        {
+            winLosePanel.GetComponent<CanvasGroup>().DOFade(0.5f, 1f).OnComplete(() =>
+            {
+                playerDrawText.SetActive(true);
                 DOVirtual.DelayedCall(3f, () =>
                 {
                     DelayAndQuitToMainMenu();

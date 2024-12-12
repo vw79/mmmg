@@ -120,6 +120,17 @@ public class GameHost : MonoBehaviour
     private void SwitchTurn()
     {
         currentTurn++;
+
+        // Check if max turn reached
+        if (currentTurn == 30)
+        {
+            foreach(GameManager gm in gameManagers)
+            {
+                gm.GameDrawClientRpc();
+            }
+            return;
+        }
+
         if (currentTurn % 2 == 1)
         {
             gameState = PlayerOrder.First;

@@ -699,7 +699,7 @@ public class CardManager : MonoBehaviour
 
     public void CallVFX(int charIndex, string attackerID)
     {
-        GameObject vfxObject = Instantiate(characterVfxDictionary[attackerID], GetCharacterPosition(charIndex).position + new Vector3(0,0.1f,0), Quaternion.identity);
+        GameObject vfxObject = Instantiate(characterVfxDictionary[attackerID], GetCharacterPosition(charIndex).position + new Vector3(0,0.15f,0), Quaternion.identity);
         Destroy(vfxObject, 3f);
     }
 

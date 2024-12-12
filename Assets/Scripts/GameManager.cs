@@ -241,6 +241,13 @@ public class GameManager : NetworkBehaviour
             scoreboard.ShowLosePanel();
         }
     }
+
+    [ClientRpc]
+    public void GameDrawClientRpc()
+    {
+        if (!IsOwner) return;
+        scoreboard.ShowDrawPanel();
+    }
     #endregion
 
     public bool ValidateSelfCharacterAlive(int charIndex)
