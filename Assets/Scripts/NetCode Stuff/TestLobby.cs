@@ -38,6 +38,8 @@ public class TestLobby : MonoBehaviour
         if(UnityServices.State == ServicesInitializationState.Initialized)
         {
             lobbyUI.ShowLobbyPanel();
+            string tempName = AuthenticationService.Instance.PlayerName;
+            playerName = tempName.Substring(0, tempName.Length - 5);
         }
         else
         {
@@ -102,26 +104,36 @@ public class TestLobby : MonoBehaviour
 
     private async void HandleLobbyUpdates()
     {
-        if (joinedLobby != null)
+        try
         {
-            lobbyUpdateTimer -= Time.deltaTime;
-            if (lobbyUpdateTimer <= 0 & !isGameStarted)
+            if (joinedLobby != null)
             {
-                lobbyUpdateTimer = 1.5f;
-                Lobby lobby = await LobbyService.Instance.GetLobbyAsync(joinedLobby.Id);
-                joinedLobby = lobby;
-
-                lobbyUI.UpdateLobbyPlayers(lobby, IsHost());
-
-                if (joinedLobby.Data["GameKey"].Value != "0")
+                lobbyUpdateTimer -= Time.deltaTime;
+                if (lobbyUpdateTimer <= 0 & !isGameStarted)
                 {
-                    if(!IsHost())
+                    lobbyUpdateTimer = 1.5f;
+                    Lobby lobby = await LobbyService.Instance.GetLobbyAsync(joinedLobby.Id);
+                    joinedLobby = lobby;
+
+                    lobbyUI.UpdateLobbyPlayers(lobby, IsHost(), isGameStarted);
+
+                    //Debug_PrintLobby(joinedLobby);
+                    //PrintPlayers(joinedLobby);
+
+                    if (joinedLobby.Data["GameKey"].Value != "0")
                     {
-                        RelaySystem.Instance.JoinRelay(joinedLobby.Data["GameKey"].Value);
-                        isGameStarted = true;
+                        if (!IsHost())
+                        {
+                            RelaySystem.Instance.JoinRelay(joinedLobby.Data["GameKey"].Value);
+                            isGameStarted = true;
+                        }
                     }
                 }
             }
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
         }
     }
 

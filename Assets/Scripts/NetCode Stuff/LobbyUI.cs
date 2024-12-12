@@ -33,7 +33,7 @@ public class LobbyUI : MonoBehaviour
         loginPanel.SetActive(false);
         lobbyPanel.SetActive(true);
         roomPanel.SetActive(false);
-        Debug.Log(AuthenticationService.Instance.PlayerName);
+        //Debug.Log(AuthenticationService.Instance.PlayerName);
         playerName.text = AuthenticationService.Instance.PlayerName;
     }
 
@@ -59,7 +59,7 @@ public class LobbyUI : MonoBehaviour
         }
     }
 
-    public void UpdateLobbyPlayers(Lobby lobby, bool isHost)
+    public void UpdateLobbyPlayers(Lobby lobby, bool isHost, bool isGameStarted)
     {
         foreach (Transform child in room_PlayerListPanel.transform)
         {
@@ -72,7 +72,7 @@ public class LobbyUI : MonoBehaviour
             room.GetComponent<Lobby_PlayerInfo>().Initialize(player);
         }
 
-        if (isHost && lobby.Players.Count >= 2)
+        if (isHost && lobby.Players.Count >= 2 && !isGameStarted)
         {
             startGameButton.interactable = true;
         }
