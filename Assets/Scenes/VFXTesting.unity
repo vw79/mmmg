@@ -19494,6 +19494,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: VFX_JokerAttack
       objectReference: {fileID: 0}
+    - target: {fileID: 5836595334564422626, guid: 4438f48055683e74e95c3b87fdea48d7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6160772168425914206, guid: 4438f48055683e74e95c3b87fdea48d7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -19617,6 +19622,55 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e30dd3d512d12ea4fb0e58a0495e94ef, type: 3}
+--- !u!1 &1461040444
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1461040446}
+  - component: {fileID: 1461040445}
+  m_Layer: 0
+  m_Name: Global Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1461040445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461040444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 0b07675b2a21f754e9289a1cde32c627, type: 2}
+--- !u!4 &1461040446
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461040444}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.1815771, y: -2.3647475, z: -0.30537632}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1485234761
 GameObject:
   m_ObjectHideFlags: 0
@@ -22066,6 +22120,74 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1917902859}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1931229378
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8549875618793313751, guid: 0f73b40bc0fa97e468815f75e6cb3bd2,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.7358483
+      objectReference: {fileID: 0}
+    - target: {fileID: 8549875618793313751, guid: 0f73b40bc0fa97e468815f75e6cb3bd2,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.0200002
+      objectReference: {fileID: 0}
+    - target: {fileID: 8549875618793313751, guid: 0f73b40bc0fa97e468815f75e6cb3bd2,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.3736145
+      objectReference: {fileID: 0}
+    - target: {fileID: 8549875618793313751, guid: 0f73b40bc0fa97e468815f75e6cb3bd2,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8549875618793313751, guid: 0f73b40bc0fa97e468815f75e6cb3bd2,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8549875618793313751, guid: 0f73b40bc0fa97e468815f75e6cb3bd2,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8549875618793313751, guid: 0f73b40bc0fa97e468815f75e6cb3bd2,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8549875618793313751, guid: 0f73b40bc0fa97e468815f75e6cb3bd2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8549875618793313751, guid: 0f73b40bc0fa97e468815f75e6cb3bd2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8549875618793313751, guid: 0f73b40bc0fa97e468815f75e6cb3bd2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9017178095246411483, guid: 0f73b40bc0fa97e468815f75e6cb3bd2,
+        type: 3}
+      propertyPath: m_Name
+      value: VFX_ClericAttack
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0f73b40bc0fa97e468815f75e6cb3bd2, type: 3}
 --- !u!1001 &1967394713
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23469,3 +23591,5 @@ SceneRoots:
   - {fileID: 285580217}
   - {fileID: 885199818}
   - {fileID: 1398543799}
+  - {fileID: 1461040446}
+  - {fileID: 1931229378}
