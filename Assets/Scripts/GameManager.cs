@@ -114,17 +114,17 @@ public class GameManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void StartTurnClientRpc()
+    public void StartTurnClientRpc(int currentTurn)
     {
         if (!IsOwner) return;
-        cardManager.StartTurn();
+        cardManager.StartTurn(currentTurn);
     }
 
     [ClientRpc]
-    public void OpponentStartTurnClientRpc()
+    public void OpponentStartTurnClientRpc(int currentTurn)
     {
         if (!IsOwner) return;
-        cardManager.OpponentStartTurn();
+        cardManager.OpponentStartTurn(currentTurn);
     }
 
     [Rpc(SendTo.Server, RequireOwnership = false)]
@@ -243,10 +243,22 @@ public class GameManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void GameDrawClientRpc()
+    public void GameDrawClientRpc(int selfScore, int opponentScore)
     {
         if (!IsOwner) return;
-        scoreboard.ShowDrawPanel();
+        scoreboard.UpdateScore(selfScore, opponentScore);
+        if (selfScore > opponentScore)
+        {
+            scoreboard.ShowWinPanel();
+        }
+        else if (opponentScore > selfScore)
+        {
+            scoreboard.ShowLosePanel();
+        }
+        else
+        {
+            scoreboard.ShowDrawPanel();
+        }
     }
     #endregion
 

@@ -398,9 +398,10 @@ public class CardManager : MonoBehaviour
         sequence.Play();
     }
 
-    public void StartTurn()
+    public void StartTurn(int currentTurn)
     {
-        promptManager.ShowPopup("Your Turn", Color.blue);
+        int turnLeft = 45 - currentTurn;
+        promptManager.ShowPopup($"{turnLeft} Turn Left", Color.blue);
         actionPoint = 1;
 
         // Start Turn Anim -> Draw Card -> Start Action
@@ -414,9 +415,10 @@ public class CardManager : MonoBehaviour
         sequence.Play();
     }
 
-    public void OpponentStartTurn()
+    public void OpponentStartTurn(int currentTurn)
     {
-        promptManager.ShowPopup("Opponent Turn", Color.red);
+        int turnLeft = 45 - currentTurn;
+        promptManager.ShowPopup($"{turnLeft} Turn Left", Color.red);
         // Opponent Start Turn Anim
         Sequence sequence = DOTween.Sequence();
         sequence.AppendCallback(() => turnIndicator.ShowOpponentTurn())

@@ -122,11 +122,11 @@ public class GameHost : MonoBehaviour
         currentTurn++;
 
         // Check if max turn reached
-        if (currentTurn == 30)
+        if (currentTurn == 45)
         {
-            foreach(GameManager gm in gameManagers)
+            for (int i = 0; i < gameManagers.Count; i++)
             {
-                gm.GameDrawClientRpc();
+                gameManagers[i].GameDrawClientRpc(gameManagers[i].Score.Value, gameManagers[(i + 1) % 2].Score.Value);
             }
             return;
         }
@@ -143,8 +143,8 @@ public class GameHost : MonoBehaviour
         GameManager playerOnTurn = playerData.Find(x => x.playOrder == gameState).gameManager;
         GameManager playerNotOnTurn = playerData.Find(x => x.playOrder != gameState).gameManager;
 
-        playerOnTurn.StartTurnClientRpc();
-        playerNotOnTurn.OpponentStartTurnClientRpc();
+        playerOnTurn.StartTurnClientRpc(currentTurn);
+        playerNotOnTurn.OpponentStartTurnClientRpc(currentTurn);
     }
 
     [Rpc(SendTo.Server, RequireOwnership = false)]
