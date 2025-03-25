@@ -61,6 +61,6 @@ A competitive 2-player multiplayer card game built in **Unity**, where players b
 ## 📽️ Gameplay
 <p align="center">
   <a href="https://www.youtube.com/watch?v=FiGg6mL-ZOc">
-    <img src="https://img.youtube.com/vi/FiGg6mL-ZOc/0.jpg" width="1080"/>
+    <img src="https://img.youtube.com/vi/FiGg6mL-ZOc/0.jpg" width="480"/>
   </a>
 </p>
